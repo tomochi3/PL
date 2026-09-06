@@ -16,7 +16,6 @@
       </a>
       <nav class="header-nav" aria-label="ページ内ナビゲーション">
         <a href="#map">団体地図</a>
-        <a href="#rookie-records">新人記録</a>
         <a href="#events">大会レベル</a>
       </nav>
     </div>
@@ -142,58 +141,10 @@
       </div>
     </section>
 
-    <section class="section-block rookie-record-section" id="rookie-records" aria-labelledby="rookie-records-title">
-      <div class="section-heading">
-        <div>
-          <span class="section-number">02 / NEWCOMER RECORD MAP</span>
-          <h1 id="rookie-records-title">新人大会の最高Total</h1>
-        </div>
-        <p class="section-note">公式結果が公開されている大会を掲載。色のある地点を選べます。</p>
-      </div>
-
-      <div class="rookie-map-layout">
-        <div class="rookie-map-stage" id="rookie-map-stage">
-          <svg id="rookie-map-svg" role="img" aria-labelledby="rookie-map-title rookie-map-desc">
-            <title id="rookie-map-title">新人パワーリフティング大会の最高トータル地図</title>
-            <desc id="rookie-map-desc">東京、愛知、近畿で公開された新人大会結果の最高トータルを示します。</desc>
-          </svg>
-          <div class="rookie-map-markers" id="rookie-map-markers" aria-label="掲載大会"></div>
-          <p class="rookie-map-error" id="rookie-map-error" hidden>地図を読み込めませんでした。</p>
-        </div>
-
-        <aside class="rookie-detail" aria-live="polite" aria-labelledby="rookie-detail-place">
-          <div class="rookie-detail-heading">
-            <span id="rookie-detail-region">関東</span>
-            <strong id="rookie-detail-place">東京</strong>
-            <small id="rookie-detail-year">2026</small>
-          </div>
-          <p id="rookie-detail-meet">第7回 新人限定TOKYO</p>
-          <dl class="rookie-records">
-            <div>
-              <dt>男子</dt>
-              <dd><strong id="rookie-men-total">675</strong><span>kg</span><small id="rookie-men-athlete">森 圭佑・93kg級</small></dd>
-            </div>
-            <div>
-              <dt>女子</dt>
-              <dd><strong id="rookie-women-total">355</strong><span>kg</span><small id="rookie-women-athlete">藤原 彩香・57kg級</small></dd>
-            </div>
-          </dl>
-          <a class="rookie-source-link" id="rookie-source-link" href="https://powerlifting.tokyo/wp-content/uploads/2026/02/458c7bb3fbd515a3a11f1b4da8fe095b.pdf" target="_blank" rel="noreferrer">公式結果 ↗</a>
-        </aside>
-      </div>
-      <div class="rookie-map-meta">
-        <span><i class="legend-swatch has-result" aria-hidden="true"></i>公開結果あり</span>
-        <span><i class="legend-swatch no-result" aria-hidden="true"></i>未確認</span>
-        <span>クラシック3種目・絶対重量／年は大会ごとに異なります</span>
-      </div>
-      <p class="rookie-map-note">※ 新人限定または「新人」区分の公式結果だけを比較。公開結果を確認できた関東・東海・近畿を掲載しています。</p>
-      <p class="rookie-geo-source">地図：<a href="https://github.com/northprint/japan-map-selector" target="_blank" rel="noreferrer">国土数値情報由来 GeoJSON</a></p>
-    </section>
-
     <section class="section-block" id="events" aria-labelledby="events-title">
       <div class="section-heading">
         <div>
-          <span class="section-number">03 / COMPETITION LEVEL</span>
+          <span class="section-number">02 / COMPETITION LEVEL</span>
           <h1 id="events-title">大会レベル</h1>
         </div>
       </div>
@@ -273,8 +224,6 @@
 
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" defer></script>
-  <script src="map-data.js" defer></script>
   <script src="script.js" defer></script>
 </body>
 </html>

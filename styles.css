@@ -355,6 +355,34 @@ h2 {
   box-shadow: var(--shadow);
 }
 
+.rookie-heading-side {
+  display: grid;
+  justify-items: end;
+  gap: 9px;
+}
+
+.rookie-number-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 4px 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.rookie-number-toggle input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--red);
+}
+
 .rookie-map-stage {
   position: relative;
   min-width: 0;
@@ -462,6 +490,11 @@ h2 {
 .rookie-records dd strong { font-size: 37px; letter-spacing: -.04em; }
 .rookie-records dd span { margin-left: 4px; color: var(--muted); font-size: 13px; font-weight: 800; }
 .rookie-records dd small { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
+.rookie-record-reading { display: none; }
+.rookie-record-reading > span { margin-left: 4px; }
+.rookie-record-placeholder { display: inline-block; margin: 9px 0 8px !important; font-size: 15px !important; }
+.rookie-record-section.show-records .rookie-record-reading { display: inline; }
+.rookie-record-section.show-records .rookie-record-placeholder { display: none; }
 
 .rookie-source-link {
   align-self: flex-start;
@@ -758,6 +791,8 @@ h2 {
   #map .section-note { display: none; }
   .section-heading h1 { font-size: 25px; }
   .section-note { margin-top: 3px; font-size: 11px; }
+  .rookie-heading-side { justify-items: start; }
+  .rookie-number-toggle { margin-top: 5px; }
   .route-picker { margin: 0 -12px 2px; border-right: 0; border-left: 0; border-radius: 0; }
   .route-button { padding-inline: 9px; font-size: 11px; }
   .map-panel { padding: 5px; border-radius: 12px; }
@@ -954,10 +989,33 @@ h2 {
 .map-result-meta {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 14px;
 }
 
 .record-unit { color: var(--muted); font-size: 10px; font-weight: 800; }
+
+.map-number-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.map-number-toggle input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--red);
+}
 
 .japan-map-frame {
   position: relative;
@@ -1034,6 +1092,7 @@ h2 {
 .map-district-outline.is-muted { opacity: .1; }
 
 .map-record-layer { pointer-events: none; }
+.map-record-layer.is-hidden { display: none; }
 
 .map-record-value {
   fill: var(--muted);
@@ -1145,8 +1204,9 @@ h2 {
   .prefecture-toolbar > * { min-width: 0; }
   .record-toolbar { grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
   .record-current { grid-column: 1 / -1; }
-  .prefecture-results-heading { align-items: flex-start; }
-  .map-result-meta { flex-direction: column; align-items: flex-end; gap: 1px; }
+  .prefecture-results-heading { display: block; }
+  .map-result-meta { justify-content: flex-end; gap: 10px; margin-top: 7px; }
+  .record-unit { display: none; }
   .japan-map { padding: 12px; }
   .japan-map-svg { width: min(100%, 360px); }
   .map-record-value { font-size: 6px; }

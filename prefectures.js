@@ -133,9 +133,11 @@ const weightClassSelect = document.getElementById("record-weight-class");
 const currentRecordLabel = document.getElementById("record-current-label");
 const recordCoverage = document.getElementById("record-coverage");
 const districtCoverage = document.getElementById("district-coverage");
+const mapNumberToggle = document.getElementById("map-number-toggle");
 let selectedRegion = "all";
 let selectedSex = "men";
 let selectedWeightClass = "66";
+let showMapNumbers = false;
 
 document.title = `${meetName}の都道府県選択｜日本のパワーリフティング団体地図`;
 title.textContent = `${meetName}：都道府県を選ぶ`;
@@ -171,6 +173,14 @@ function populateWeightClasses() {
 function updateRecordControls() {
   const sexLabel = selectedSex === "men" ? "男子" : "女子";
   currentRecordLabel.textContent = `${recordData.category} ${sexLabel}${selectedWeightClass}kg級`;
+}
+
+function updateMapNumberVisibility() {
+  showMapNumbers = Boolean(mapNumberToggle?.checked);
+  const recordLayer = map.querySelector(".map-record-layer");
+  if (!recordLayer) return;
+  recordLayer.classList.toggle("is-hidden", !showMapNumbers);
+  recordLayer.setAttribute("aria-hidden", String(!showMapNumbers));
 }
 
 function renderRecordCoverage() {
@@ -375,6 +385,7 @@ function renderPrefectures() {
     .filter((entry) => entry.isActive)
     .forEach((entry) => recordLayer.append(createDistrictRecordLink(entry)));
   svg.append(recordLayer);
+  updateMapNumberVisibility();
 
   emptyMessage.hidden = filtered.length > 0;
   count.textContent = `${filtered.length}件`;
@@ -407,6 +418,8 @@ weightClassSelect.addEventListener("change", () => {
   selectedWeightClass = weightClassSelect.value;
   renderPrefectures();
 });
+
+mapNumberToggle?.addEventListener("change", updateMapNumberVisibility);
 
 populateWeightClasses();
 renderRecordCoverage();
