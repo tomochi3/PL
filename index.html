@@ -202,7 +202,7 @@
 
     .ecosystem-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.8fr) minmax(300px, 1fr);
+      grid-template-columns: minmax(0, 1.35fr) minmax(260px, .9fr) minmax(200px, .55fr);
       gap: 12px;
       align-items: stretch;
     }
@@ -262,17 +262,14 @@
     }
     .node p { margin: 4px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
 
-    .node.scope-world { background: var(--world); color: var(--white); }
-    .node.scope-world small, .node.scope-world p { color: var(--text-on-dark-muted); }
-    .node.scope-world .node-examples { color: var(--text-on-dark-muted); }
-    .node.scope-world[data-node="ipf"] {
+    .node.scope-world {
       border-top-color: var(--world);
       background: var(--world-soft);
       color: var(--ink);
     }
-    .node.scope-world[data-node="ipf"] small,
-    .node.scope-world[data-node="ipf"] p { color: var(--muted); }
-    .node.scope-world[data-node="ipf"] .node-examples { color: var(--muted); }
+    .node.scope-world small,
+    .node.scope-world p,
+    .node.scope-world .node-examples { color: var(--muted); }
     .node.scope-national { border-top-color: var(--red); background: var(--red-soft); }
     .node.scope-local { border-top-color: var(--teal); background: var(--teal-soft); }
     .node.scope-mixed { background: var(--surface); }
@@ -345,24 +342,7 @@
       box-shadow: 0 0 0 5px rgba(101,112,132,.12), 0 13px 32px rgba(18,33,61,.12);
     }
 
-    .related-lane {
-      display: grid;
-      grid-template-columns: 130px 1fr 180px;
-      gap: 10px;
-      align-items: center;
-      margin-top: 10px;
-      padding: 9px 13px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: var(--surface-subtle);
-    }
-
-    .related-lane > strong { color: var(--ink); font-size: 13px; }
-    .related-lane p { margin: 0; color: var(--muted); font-size: 12px; }
-
-    .related-lane .node {
-      padding: 8px 10px;
-    }
+    .related-ecosystem .node { min-height: 76px; }
 
     .map-caption {
       margin: 7px 3px 0;
@@ -582,15 +562,20 @@
       .branch-label { margin: 5px 0 3px; font-size: 8px; }
       .branch-grid { gap: 4px; }
       .branch-grid .node { min-height: 0; }
-      .related-lane { grid-template-columns: 100px 1fr 150px; gap: 6px; margin-top: 5px; padding: 5px 8px; }
-      .related-lane > strong { font-size: 10px; }
-      .related-lane p { font-size: 9px; }
-      .related-lane .node { padding: 5px 7px; }
+      .related-ecosystem .node { min-height: 0; }
       .map-caption { margin-top: 3px; font-size: 9px; }
     }
 
     @media (max-width: 900px) {
-      .ecosystem-grid { grid-template-columns: minmax(0, 1.45fr) minmax(220px, 1fr); }
+      .ecosystem-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); }
+      .related-ecosystem {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 8px;
+        align-items: center;
+      }
+      .related-ecosystem .ecosystem-label { margin: 0; }
     }
 
     @media (max-width: 640px) {
@@ -598,16 +583,16 @@
       .header-inner { min-height: 58px; }
       .header-nav { display: none; }
       .brand { font-size: 13px; }
-      main { padding: 9px 0 48px; }
+      main { padding: 4px 0 48px; }
       .section-heading { display: block; }
       #map .section-number,
       #map .section-note { display: none; }
       .section-heading h1 { font-size: 25px; }
       .section-note { margin-top: 3px; font-size: 11px; }
-      .route-picker { margin-inline: -12px; border-right: 0; border-left: 0; border-radius: 0; }
+      .route-picker { margin: 0 -12px 2px; border-right: 0; border-left: 0; border-radius: 0; }
       .route-button { padding-inline: 9px; font-size: 11px; }
       .map-panel { padding: 5px; border-radius: 12px; }
-      .ecosystem-grid { grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 4px; align-items: start; }
+      .ecosystem-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 4px; align-items: start; }
       .ecosystem { padding: 6px; }
       .ecosystem-label { display: block; }
       .ecosystem-label h3 { font-size: 12px; }
@@ -617,19 +602,18 @@
         display: block;
         margin: 2px 0 0;
         font-size: 9px;
-        white-space: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .node small,
       .branch-label,
       .map-caption { display: none; }
       .node p { display: none; }
       .branch-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .para .branch-grid { grid-template-columns: 1fr; }
       .branch-grid .node { min-height: 0; }
-      .related-lane { grid-template-columns: minmax(0, 1fr) 105px; }
-      .related-lane > strong { font-size: 8px; }
-      .related-lane p { display: none; }
-      .related-lane .node { grid-column: auto; }
+      .related-ecosystem { grid-template-columns: 90px 1fr; padding: 5px; }
+      .related-ecosystem .ecosystem-label { display: block; }
       .scroll-hint { display: block; }
       .section-block { margin-top: 64px; }
     }
@@ -756,16 +740,19 @@
               </div>
             </div>
           </article>
-        </div>
 
-        <div class="related-lane">
-          <strong>隣接する関連競技</strong>
-          <p>標準的な三種競技とは種目構成も記録体系も別。JPAは協力団体として掲載しています。</p>
-          <div class="node scope-mixed" data-node="jpff">
-            <small>BENCH + DEADLIFT</small>
-            <a class="node-link" href="https://push-pull.wixsite.com/jpff" target="_blank" rel="noreferrer" data-jump-profile="pushpull"><strong>JPFF プッシュプル</strong></a>
-            <span class="node-examples">例：全日本プッシュプル</span>
-          </div>
+          <aside class="ecosystem related-ecosystem" aria-labelledby="related-ecosystem-title">
+            <div class="ecosystem-label">
+              <h3 id="related-ecosystem-title">関連競技</h3>
+              <span>ベンチ＋デッド</span>
+            </div>
+            <div class="node scope-mixed" data-node="jpff">
+              <small>BENCH + DEADLIFT</small>
+              <a class="node-link" href="https://push-pull.wixsite.com/jpff" target="_blank" rel="noreferrer" data-jump-profile="pushpull"><strong>JPFF プッシュプル</strong></a>
+              <span class="node-examples">例：全日本プッシュプル</span>
+              <p>スクワットを行わない二種目競技</p>
+            </div>
+          </aside>
         </div>
         <p class="map-caption">※ クラシック／エクイップは「団体の違い」ではなく、JPA内の用具ルールの違いです。</p>
       </div>
@@ -777,7 +764,6 @@
           <span class="section-number">02 / COMPETITION LEVEL</span>
           <h1 id="events-title">大会レベル</h1>
         </div>
-        <p class="section-note">下から順にステップアップ。</p>
       </div>
 
       <p class="scroll-hint" aria-hidden="true">← 横に見られます →</p>
