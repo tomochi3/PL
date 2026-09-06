@@ -118,94 +118,9 @@
     .header-nav a { text-decoration: none; }
     .header-nav a:hover { color: var(--white); }
 
-    .hero {
-      overflow: hidden;
-      background: var(--navy);
-      color: var(--white);
-    }
+    main { padding: 54px 0 82px; }
 
-    .hero-inner {
-      position: relative;
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(310px, .65fr);
-      gap: 64px;
-      min-height: 550px;
-      align-items: center;
-      padding: 76px 0 84px;
-    }
-
-    .hero-inner::before {
-      content: "";
-      position: absolute;
-      width: 460px;
-      height: 460px;
-      right: -160px;
-      top: 24px;
-      border: 76px solid rgba(236, 96, 77, .12);
-      border-radius: 50%;
-    }
-
-    .eyebrow {
-      margin: 0 0 18px;
-      color: var(--red);
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      max-width: 760px;
-      margin: 0;
-      font-size: clamp(42px, 6vw, 76px);
-      line-height: 1.08;
-      letter-spacing: -.045em;
-    }
-
-    .hero-lead {
-      max-width: 650px;
-      margin: 28px 0 0;
-      color: #cdd5e7;
-      font-size: clamp(16px, 2vw, 20px);
-    }
-
-    .hero-summary {
-      position: relative;
-      padding: 28px;
-      border: 1px solid rgba(255,255,255,.15);
-      border-radius: var(--radius-lg);
-      background: rgba(255,255,255,.07);
-      box-shadow: 0 24px 60px rgba(0,0,0,.18);
-    }
-
-    .summary-label {
-      margin: 0 0 22px;
-      color: #9eabc7;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: .14em;
-    }
-
-    .summary-row {
-      display: grid;
-      grid-template-columns: 46px 1fr;
-      gap: 15px;
-      align-items: center;
-      padding: 13px 0;
-      border-top: 1px solid rgba(255,255,255,.11);
-    }
-
-    .summary-number {
-      color: var(--red);
-      font-size: 29px;
-      font-weight: 900;
-      line-height: 1;
-    }
-
-    .summary-row strong { display: block; font-size: 15px; }
-    .summary-row span:last-child { color: #aeb9d0; font-size: 12px; }
-
-    main { padding: 84px 0 100px; }
+    main > section { scroll-margin-top: 92px; }
 
     .section-heading {
       display: flex;
@@ -224,11 +139,12 @@
       letter-spacing: .15em;
     }
 
+    h1,
     h2 {
       margin: 0;
       font-size: clamp(29px, 4vw, 46px);
       line-height: 1.2;
-      letter-spacing: -.035em;
+      letter-spacing: 0;
     }
 
     .section-note {
@@ -373,8 +289,18 @@
       transition: opacity .25s, border-color .25s, box-shadow .25s, transform .25s;
     }
 
-    button.node { cursor: pointer; }
-    button.node:hover { transform: translateY(-2px); }
+    .node[href] {
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .node[href]:hover { transform: translateY(-2px); }
+
+    .node[href]:focus-visible {
+      border-color: var(--red);
+      outline: 3px solid rgba(236, 96, 77, .2);
+      outline-offset: 2px;
+    }
 
     .node small {
       display: block;
@@ -477,7 +403,7 @@
       font-size: 12px;
     }
 
-    .section-block { margin-top: 100px; }
+    .section-block { margin-top: 84px; }
 
     .level-matrix-wrap {
       overflow-x: auto;
@@ -551,7 +477,50 @@
       line-height: 1.5;
     }
 
-    .meet + .meet { margin-top: 4px; }
+    .meet + .meet {
+      margin-top: 8px;
+      padding-top: 7px;
+      border-top: 1px dashed #d9d6ce;
+    }
+
+    .meet-link {
+      color: inherit;
+      text-decoration-color: rgba(18, 33, 61, .35);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .meet-link:hover {
+      color: var(--red);
+      text-decoration-color: currentColor;
+    }
+
+    .meet-link:focus-visible {
+      border-radius: 2px;
+      outline: 2px solid var(--red);
+      outline-offset: 2px;
+    }
+
+    .meet-records {
+      display: grid;
+      gap: 1px;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 8px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .meet-records span { display: block; }
+
+    .meet-records b {
+      margin-right: 3px;
+      font-size: 7px;
+      font-weight: 900;
+    }
+
+    .meet-records .win { color: #9a6810; }
+    .meet-records .entry { color: #08796f; }
     .meet-owner { color: var(--muted); font-size: 10px; font-weight: 800; }
     .empty { color: #c5c5c2; }
 
@@ -568,142 +537,29 @@
       text-align: right;
     }
 
-    .first-meet {
-      display: grid;
-      grid-template-columns: 150px repeat(4, minmax(0, 1fr));
-      gap: 1px;
-      overflow: hidden;
-      margin-top: 18px;
-      border-radius: 15px;
-      background: var(--line);
-    }
-
-    .first-meet > * {
-      min-height: 82px;
-      padding: 15px;
-      background: var(--surface);
-    }
-
-    .first-meet-title {
-      display: grid;
-      align-content: center;
-      background: var(--red);
-      color: #fff;
-      font-size: 14px;
-      font-weight: 900;
-    }
-
-    .first-meet-item small {
-      display: block;
+    .matrix-record-note {
+      margin: 10px 3px 0;
       color: var(--muted);
       font-size: 10px;
-      font-weight: 900;
+      line-height: 1.6;
     }
 
-    .first-meet-item strong {
-      display: block;
-      margin-top: 5px;
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    .rule-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .rule-card {
-      padding: 25px;
-      border-top: 4px solid var(--teal);
-      border-radius: 0 0 var(--radius-md) var(--radius-md);
-      background: var(--surface);
-      box-shadow: 0 13px 38px rgba(18,33,61,.07);
-    }
-
-    .rule-card:nth-child(2) { border-top-color: var(--red); }
-    .rule-card:nth-child(3) { border-top-color: var(--gold); }
-    .rule-card strong { display: block; margin-bottom: 9px; font-size: 16px; }
-    .rule-card p { margin: 0; color: var(--muted); font-size: 13px; }
-
-    .decision-panel {
-      display: grid;
-      grid-template-columns: .8fr 1.2fr;
-      gap: 45px;
-      align-items: center;
-      padding: 42px;
-      border-radius: var(--radius-lg);
-      background: var(--navy);
-      color: #fff;
-      box-shadow: var(--shadow);
-    }
-
-    .decision-panel .section-number { color: var(--red); }
-    .decision-panel h2 { font-size: clamp(28px, 4vw, 42px); }
-    .decision-panel > div:first-child p { margin: 17px 0 0; color: #b9c3d9; font-size: 13px; }
-
-    .decision-list { display: grid; gap: 10px; }
-    .decision-row {
-      display: grid;
-      grid-template-columns: 118px 22px 1fr;
-      gap: 12px;
-      align-items: center;
-      padding: 14px 16px;
-      border: 1px solid rgba(255,255,255,.11);
-      border-radius: 13px;
-      background: rgba(255,255,255,.06);
-      font-size: 13px;
-    }
-
-    .decision-row strong { color: #fff; }
-    .decision-arrow { color: var(--red); font-weight: 900; }
-    .decision-destination { color: #d5dced; }
-
-    .source-footer {
-      margin-top: 92px;
-      padding-top: 28px;
-      border-top: 1px solid var(--line);
-    }
-
-    .source-footer h2 { font-size: 18px; }
-    .source-footer p { margin: 8px 0 18px; color: var(--muted); font-size: 12px; }
-
-    .source-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 9px;
-    }
-
-    .source-links a {
-      padding: 8px 11px;
-      border: 1px solid var(--line);
+    .first-badge {
+      display: inline-block;
+      margin-left: 5px;
+      padding: 1px 5px;
       border-radius: 999px;
-      background: rgba(255,255,255,.5);
-      color: var(--ink);
-      font-size: 11px;
-      font-weight: 800;
-      text-decoration: none;
-    }
-
-    .source-links a:hover { border-color: var(--ink); background: #fff; }
-
-    .footer-note {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      margin-top: 40px;
-      color: var(--muted);
-      font-size: 11px;
+      background: var(--red);
+      color: #fff;
+      font-size: 7px;
+      font-weight: 900;
+      line-height: 1.5;
+      vertical-align: 2px;
+      white-space: nowrap;
     }
 
     @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; gap: 42px; padding: 64px 0 68px; }
-      .hero-summary { max-width: 600px; }
       .ecosystem-grid { grid-template-columns: 1fr; }
-      .first-meet { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .first-meet-title { grid-column: 1 / -1; min-height: 56px; }
-      .rule-grid { grid-template-columns: 1fr; }
-      .decision-panel { grid-template-columns: 1fr; }
       .related-lane { grid-template-columns: 130px 1fr; }
       .related-lane .node { grid-column: 1 / -1; }
     }
@@ -713,10 +569,7 @@
       .header-inner { min-height: 58px; }
       .header-nav { display: none; }
       .brand { font-size: 13px; }
-      .hero-inner { min-height: auto; padding: 52px 0 58px; }
-      .hero-lead { font-size: 15px; }
-      .hero-summary { padding: 21px; }
-      main { padding: 62px 0 70px; }
+      main { padding: 36px 0 58px; }
       .section-heading { display: block; }
       .section-note { margin-top: 12px; }
       .route-picker { margin-inline: -12px; border-right: 0; border-left: 0; border-radius: 0; }
@@ -728,10 +581,7 @@
       .branch-grid .node { min-height: 0; }
       .related-lane { grid-template-columns: 1fr; }
       .scroll-hint { display: block; }
-      .section-block { margin-top: 72px; }
-      .decision-panel { padding: 27px 21px; }
-      .decision-row { grid-template-columns: 93px 17px 1fr; padding: 12px; font-size: 11px; }
-      .footer-note { display: block; }
+      .section-block { margin-top: 64px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -740,7 +590,7 @@
     }
   </style>
 </head>
-<body>
+<body id="top">
   <header class="site-header">
     <div class="page-shell header-inner">
       <a class="brand" href="#top" aria-label="ページ上部へ">
@@ -750,42 +600,16 @@
       <nav class="header-nav" aria-label="ページ内ナビゲーション">
         <a href="#map">団体地図</a>
         <a href="#events">大会レベル</a>
-        <a href="#guide">選び方</a>
       </nav>
     </div>
   </header>
-
-  <section class="hero" id="top">
-    <div class="page-shell hero-inner">
-      <div>
-        <p class="eyebrow">Powerlifting in Japan / 2026</p>
-        <h1>日本の団体、<br>実はこう分かれる。</h1>
-        <p class="hero-lead">一般の三種競技はJPA、パラはJPPF。学生・高校・実業団はライバル団体ではなく、JPAの中にある所属別の入口です。</p>
-      </div>
-      <aside class="hero-summary" aria-label="全体像の要約">
-        <p class="summary-label">まず覚えるのは、3つだけ</p>
-        <div class="summary-row">
-          <span class="summary-number">1</span>
-          <span><strong>一般競技は JPA</strong><span>スクワット・ベンチ・デッド</span></span>
-        </div>
-        <div class="summary-row">
-          <span class="summary-number">2</span>
-          <span><strong>パラ競技は JPPF</strong><span>ベンチプレス単独</span></span>
-        </div>
-        <div class="summary-row">
-          <span class="summary-number">3</span>
-          <span><strong>プッシュプルは関連競技</strong><span>ベンチ・デッドの二種目</span></span>
-        </div>
-      </aside>
-    </div>
-  </section>
 
   <main class="page-shell">
     <section id="map" aria-labelledby="map-title">
       <div class="section-heading">
         <div>
           <span class="section-number">01 / ORGANIZATION MAP</span>
-          <h2 id="map-title">団体のつながり</h2>
+          <h1 id="map-title">団体のつながり</h1>
         </div>
         <p class="section-note">自分の立場を選ぶと、登録から世界大会までの該当ルートが光ります。</p>
       </div>
@@ -819,39 +643,39 @@
               <h3 id="general-ecosystem-title">一般パワーリフティング</h3>
               <span>3種目／ベンチ単独</span>
             </div>
-            <div class="node world-node" data-node="ipf">
+            <a class="node world-node" href="https://www.powerlifting.sport/" target="_blank" rel="noreferrer" data-node="ipf">
               <small>WORLD</small>
               <strong>IPF 国際パワーリフティング連盟</strong>
               <p>世界・アジア選手権を運営する国際団体</p>
-            </div>
+            </a>
             <div class="vertical-link" aria-hidden="true"></div>
-            <button class="node national-node" type="button" data-node="jpa" data-jump-profile="general">
+            <a class="node national-node" href="https://www.jpa-powerlifting.or.jp/" target="_blank" rel="noreferrer" data-node="jpa" data-jump-profile="general">
               <small>JAPAN / NATIONAL FEDERATION</small>
               <strong>JPA 日本パワーリフティング協会</strong>
               <p>国内ルール、日本記録、全日本大会、日本代表を統括</p>
-            </button>
+            </a>
             <p class="branch-label">JPAの加盟団体・地域組織</p>
             <div class="branch-grid">
-              <button class="node" type="button" data-node="local" data-jump-profile="general">
+              <a class="node" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer" data-node="local" data-jump-profile="general">
                 <small>LOCAL</small>
                 <strong>都道府県協会・地方ブロック</strong>
                 <p>一般選手の登録窓口。地方大会や公認記録会を開催</p>
-              </button>
-              <button class="node" type="button" data-node="student" data-jump-profile="student">
+              </a>
+              <a class="node" href="https://pando.life/@foo1vvbly2" target="_blank" rel="noreferrer" data-node="student" data-jump-profile="student">
                 <small>UNIVERSITY</small>
                 <strong>全日本学生連盟</strong>
                 <p>大学部活、地方学連、インカレを担当</p>
-              </button>
-              <button class="node" type="button" data-node="highschool" data-jump-profile="highschool">
+              </a>
+              <a class="node" href="https://power-high.sakura.ne.jp/" target="_blank" rel="noreferrer" data-node="highschool" data-jump-profile="highschool">
                 <small>HIGH SCHOOL</small>
                 <strong>全日本高校連盟</strong>
                 <p>高校生の全国大会・選抜大会を担当</p>
-              </button>
-              <button class="node" type="button" data-node="company" data-jump-profile="company">
+              </a>
+              <a class="node" href="https://jitsugyoudanpower.wixsite.com/my-site" target="_blank" rel="noreferrer" data-node="company" data-jump-profile="company">
                 <small>WORKPLACE</small>
                 <strong>全日本実業団連盟</strong>
                 <p>会社単位の個人戦・団体戦を担当</p>
-              </button>
+              </a>
             </div>
           </article>
 
@@ -860,29 +684,29 @@
               <h3 id="para-ecosystem-title">パラ・パワーリフティング</h3>
               <span>ベンチプレス</span>
             </div>
-            <div class="node world-node" data-node="wppo">
+            <a class="node world-node" href="https://www.paralympic.org/powerlifting" target="_blank" rel="noreferrer" data-node="wppo">
               <small>WORLD / PARALYMPIC</small>
               <strong>World Para Powerlifting</strong>
               <p>パラリンピックにつながる世界競技組織</p>
-            </div>
+            </a>
             <div class="vertical-link" aria-hidden="true"></div>
-            <button class="node para-node" type="button" data-node="jppf" data-jump-profile="para">
+            <a class="node para-node" href="https://jppf.jp/" target="_blank" rel="noreferrer" data-node="jppf" data-jump-profile="para">
               <small>JAPAN / PARA FEDERATION</small>
               <strong>JPPF 日本パラ・パワーリフティング連盟</strong>
               <p>対象は下肢障がい・低身長の選手など。国内大会と代表強化を統括</p>
-            </button>
+            </a>
             <p class="branch-label">JPPFの競技活動</p>
             <div class="branch-grid">
-              <div class="node" data-node="para-national">
+              <a class="node" href="https://jppf.jp/game" target="_blank" rel="noreferrer" data-node="para-national">
                 <small>CHAMPIONSHIP</small>
                 <strong>全日本・国際招待</strong>
                 <p>国内最高レベルと日本代表選考</p>
-              </div>
-              <div class="node" data-node="para-local">
+              </a>
+              <a class="node" href="https://jppf.jp/game" target="_blank" rel="noreferrer" data-node="para-local">
                 <small>CHALLENGE</small>
                 <strong>地域大会・記録会</strong>
                 <p>チャレンジカップ、オープン大会など</p>
-              </div>
+              </a>
             </div>
           </article>
         </div>
@@ -890,10 +714,10 @@
         <div class="related-lane">
           <strong>隣接する関連競技</strong>
           <p>標準的な三種競技とは種目構成も記録体系も別。JPAは協力団体として掲載しています。</p>
-          <button class="node" type="button" data-node="jpff" data-jump-profile="pushpull">
+          <a class="node" href="https://push-pull.wixsite.com/jpff" target="_blank" rel="noreferrer" data-node="jpff" data-jump-profile="pushpull">
             <small>BENCH + DEADLIFT</small>
             <strong>JPFF プッシュプル</strong>
-          </button>
+          </a>
         </div>
         <p class="map-caption">※ クラシック／エクイップは「団体の違い」ではなく、JPA内の用具ルールの違いです。</p>
       </div>
@@ -927,116 +751,65 @@
           </thead>
           <tbody>
             <tr>
-              <td class="level-cell"><span>01</span><strong>入門</strong></td>
-              <td><span class="meet">新人大会</span><span class="meet">公認記録会</span></td>
+              <td class="level-cell"><span>05</span><strong>国際</strong></td>
               <td><span class="empty">—</span></td>
               <td><span class="empty">—</span></td>
-              <td><span class="meet">学生新人戦</span></td>
-              <td><span class="meet">地域記録会</span></td>
-            </tr>
-            <tr>
-              <td class="level-cell"><span>02</span><strong>都道府県</strong></td>
-              <td><span class="meet">都道府県選手権</span></td>
-              <td><span class="empty">—</span></td>
-              <td><span class="empty">—</span></td>
-              <td><span class="meet">高校地区予選</span></td>
-              <td><span class="empty">—</span></td>
-            </tr>
-            <tr>
-              <td class="level-cell"><span>03</span><strong>ブロック</strong></td>
-              <td><span class="empty">—</span></td>
-              <td><span class="meet">関東・関西など</span><span class="meet">ブロック選手権</span></td>
-              <td><span class="empty">—</span></td>
-              <td><span class="meet">地方学生選手権</span></td>
-              <td><span class="empty">—</span></td>
+              <td>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">アジア選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男760〜830 / 女520〜570kg</span><span><b class="entry">参加最低</b>男680 / 女450kg前後</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://www.powerlifting.sport/championships/calendar" target="_blank" rel="noreferrer">IPF世界クラシック</a><span class="meet-records"><span><b class="win">優勝目安</b>男830〜900 / 女570〜630kg</span><span><b class="entry">参加最低</b>男720 / 女490kg前後</span></span></span>
+              </td>
+              <td><span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">世界学生</a><span class="meet-records"><span><b class="win">優勝目安</b>男720〜800 / 女470〜540kg</span><span><b class="entry">参加最低</b>男620 / 女400kg前後</span></span></span></td>
+              <td><span class="meet"><a class="meet-link" href="https://jppf.jp/index/page/id/177" target="_blank" rel="noreferrer">世界・パラリンピック</a><span class="meet-records"><span><b class="win">優勝目安</b>男200〜230 / 女115〜140kg</span><span><b class="entry">参加最低</b>男140 / 女75kg前後</span></span></span><span class="meet-owner">WPPO</span></td>
             </tr>
             <tr>
               <td class="level-cell"><span>04</span><strong>全国</strong></td>
               <td><span class="empty">—</span></td>
               <td><span class="empty">—</span></td>
-              <td><span class="meet">全日本クラシック</span><span class="meet">全日本ベンチ</span></td>
-              <td><span class="meet">全日本学生・高校</span><span class="meet">全日本実業団</span></td>
-              <td><span class="meet">全日本パラ</span></td>
+              <td>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">全日本クラシック</a><span class="meet-records"><span><b class="win">優勝目安</b>男700〜780 / 女480〜540kg</span><span><b class="entry">参加最低</b>男590〜630 / 女380〜420kg</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">全日本ベンチ</a><span class="meet-records"><span><b class="win">優勝目安</b>男180〜210 / 女115〜140kg</span><span><b class="entry">参加最低</b>男145〜160 / 女85〜100kg</span></span></span>
+              </td>
+              <td>
+                <span class="meet"><a class="meet-link" href="https://pando.life/@foo1vvbly2" target="_blank" rel="noreferrer">全日本学生</a><span class="meet-records"><span><b class="win">優勝目安</b>男650〜720 / 女400〜470kg</span><span><b class="entry">参加最低</b>男500 / 女310kg前後</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://power-high.sakura.ne.jp/taikai.html" target="_blank" rel="noreferrer">全日本高校</a><span class="meet-records"><span><b class="win">優勝目安</b>男520〜620 / 女330〜410kg</span><span><b class="entry">参加最低</b>男350 / 女210kg前後</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://jitsugyoudanpower.wixsite.com/my-site" target="_blank" rel="noreferrer">全日本実業団</a><span class="meet-records"><span><b class="win">優勝目安</b>男600〜700 / 女380〜460kg</span><span><b class="entry">参加最低</b>男450 / 女280kg前後</span></span></span>
+              </td>
+              <td><span class="meet"><a class="meet-link" href="https://jppf.jp/game" target="_blank" rel="noreferrer">全日本パラ</a><span class="meet-records"><span><b class="win">優勝目安</b>男150〜180 / 女75〜100kg</span><span><b class="entry">参加最低</b>男70 / 女35kg前後</span></span></span></td>
             </tr>
             <tr>
-              <td class="level-cell"><span>05</span><strong>国際</strong></td>
+              <td class="level-cell"><span>03</span><strong>ブロック</strong></td>
+              <td><span class="empty">—</span></td>
+              <td><span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">関東・関西など<br>ブロック選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男620〜700 / 女400〜480kg</span><span><b class="entry">参加最低</b>男450 / 女300kg前後</span></span></span></td>
+              <td><span class="empty">—</span></td>
+              <td><span class="meet"><a class="meet-link" href="https://pando.life/@foo1vvbly2" target="_blank" rel="noreferrer">地方学生選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男580〜680 / 女360〜440kg</span><span><b class="entry">参加最低</b>男400 / 女250kg前後</span></span></span></td>
+              <td><span class="empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="level-cell"><span>02</span><strong>都道府県</strong></td>
+              <td><span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">都道府県選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男550〜650 / 女350〜430kg</span><span><b class="entry">参加最低</b>男300 / 女180kg前後</span></span></span></td>
               <td><span class="empty">—</span></td>
               <td><span class="empty">—</span></td>
-              <td><span class="meet">アジア・世界</span><span class="meet-owner">IPF</span></td>
-              <td><span class="meet">世界学生</span></td>
-              <td><span class="meet">世界・パラリンピック</span><span class="meet-owner">WPPO</span></td>
+              <td><span class="meet"><a class="meet-link" href="https://power-high.sakura.ne.jp/taikai.html" target="_blank" rel="noreferrer">高校地区予選</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男420〜520 / 女260〜340kg</span><span><b class="entry">参加最低</b>男250 / 女150kg前後</span></span></span></td>
+              <td><span class="empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="level-cell"><span>01</span><strong>入門</strong></td>
+              <td>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">新人大会</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男400〜500 / 女250〜330kg</span><span><b class="entry">参加最低</b>記録制限なし</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">公認記録会</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男400〜500 / 女250〜330kg</span><span><b class="entry">参加最低</b>記録制限なし</span></span></span>
+              </td>
+              <td><span class="empty">—</span></td>
+              <td><span class="empty">—</span></td>
+              <td><span class="meet"><a class="meet-link" href="https://pando.life/@foo1vvbly2" target="_blank" rel="noreferrer">学生新人戦</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男450〜550 / 女280〜350kg</span><span><b class="entry">参加最低</b>記録制限なし</span></span></span></td>
+              <td><span class="meet"><a class="meet-link" href="https://jppf.jp/game" target="_blank" rel="noreferrer">地域記録会</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男90〜130 / 女45〜70kg</span><span><b class="entry">参加最低</b>記録制限なし</span></span></span></td>
             </tr>
           </tbody>
         </table>
       </div>
+      <p class="matrix-record-note">※ 三種はクラシック男子74kg級／女子63kg級のトータル、パラは男子72kg級／女子61kg級のベンチを基準にした概算です。公式の参加標準は大会要項を確認してください。</p>
 
-      <div class="first-meet" aria-label="初心者におすすめの最初の大会">
-        <div class="first-meet-title">最初はここ</div>
-        <div class="first-meet-item"><small>一般</small><strong>新人大会<br>公認記録会</strong></div>
-        <div class="first-meet-item"><small>大学</small><strong>学生新人戦</strong></div>
-        <div class="first-meet-item"><small>高校</small><strong>地区予選</strong></div>
-        <div class="first-meet-item"><small>パラ</small><strong>地域記録会</strong></div>
-      </div>
     </section>
 
-    <section class="section-block" aria-labelledby="confusion-title">
-      <div class="section-heading">
-        <div>
-          <span class="section-number">03 / COMMON CONFUSIONS</span>
-          <h2 id="confusion-title">間違えやすい境界線</h2>
-        </div>
-      </div>
-      <div class="rule-grid">
-        <article class="rule-card">
-          <strong>クラシック ≠ 別団体</strong>
-          <p>補助スーツを使わない部門。エクイップは専用スーツを使う部門で、どちらもJPAの競技です。</p>
-        </article>
-        <article class="rule-card">
-          <strong>年齢区分 ≠ 別団体</strong>
-          <p>サブジュニア、ジュニア、オープン、マスターズは同じ競技組織内の年齢カテゴリーです。</p>
-        </article>
-        <article class="rule-card">
-          <strong>ジム主催 ≠ 非公式</strong>
-          <p>ジム名の大会でもJPAの公認を受け、JPAルールで行われる場合は公式記録として扱われます。</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section-block" id="guide" aria-labelledby="guide-title">
-      <div class="decision-panel">
-        <div>
-          <span class="section-number">04 / QUICK GUIDE</span>
-          <h2 id="guide-title">自分は、どこへ行けばいい？</h2>
-          <p>大会に出たい場合は、目的より先に「自分がどの所属区分か」を確認すると迷いません。</p>
-        </div>
-        <div class="decision-list">
-          <div class="decision-row"><strong>一般・個人</strong><span class="decision-arrow">→</span><span class="decision-destination">地元の都道府県協会</span></div>
-          <div class="decision-row"><strong>大学の部活</strong><span class="decision-arrow">→</span><span class="decision-destination">大学・地方学連</span></div>
-          <div class="decision-row"><strong>高校の部活</strong><span class="decision-arrow">→</span><span class="decision-destination">全日本高校連盟</span></div>
-          <div class="decision-row"><strong>会社チーム</strong><span class="decision-arrow">→</span><span class="decision-destination">実業団連盟＋都道府県協会</span></div>
-          <div class="decision-row"><strong>パラ競技</strong><span class="decision-arrow">→</span><span class="decision-destination">JPPF</span></div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="source-footer" aria-labelledby="source-title">
-      <h2 id="source-title">公式情報</h2>
-      <p>団体構成・大会例は2026年9月6日時点で各団体が公開している情報をもとに整理しています。</p>
-      <div class="source-links">
-        <a href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">JPA 組織・加盟団体</a>
-        <a href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">JPA 大会情報</a>
-        <a href="https://www.powerlifting.sport/federation/regions/asia" target="_blank" rel="noreferrer">IPF アジア加盟国</a>
-        <a href="https://powerlifting.tokyo/" target="_blank" rel="noreferrer">東京都協会</a>
-        <a href="https://power-high.sakura.ne.jp/taikai.html" target="_blank" rel="noreferrer">全日本高校連盟</a>
-        <a href="https://jitsugyoudanpower.wixsite.com/my-site" target="_blank" rel="noreferrer">全日本実業団連盟</a>
-        <a href="https://jppf.jp/game" target="_blank" rel="noreferrer">JPPF 大会一覧</a>
-        <a href="https://www.playtruejapan.org/jada/member.html" target="_blank" rel="noreferrer">JADA 加盟団体</a>
-      </div>
-      <div class="footer-note">
-        <span>POWERLIFTING FEDERATION MAP / JAPAN</span>
-        <span>大会要項・参加資格は必ず主催団体の最新情報をご確認ください。</span>
-      </div>
-    </footer>
   </main>
 
   <script>
