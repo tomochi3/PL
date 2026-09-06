@@ -252,10 +252,19 @@
 
     .node strong { display: block; font-size: 14px; line-height: 1.35; }
     .node-link strong { display: inline; }
+    .node-examples {
+      margin-left: 8px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
     .node p { margin: 4px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
 
     .node.scope-world { background: var(--world); color: var(--white); }
     .node.scope-world small, .node.scope-world p { color: var(--text-on-dark-muted); }
+    .node.scope-world .node-examples { color: var(--text-on-dark-muted); }
     .node.scope-world[data-node="ipf"] {
       border-top-color: var(--world);
       background: var(--world-soft);
@@ -263,6 +272,7 @@
     }
     .node.scope-world[data-node="ipf"] small,
     .node.scope-world[data-node="ipf"] p { color: var(--muted); }
+    .node.scope-world[data-node="ipf"] .node-examples { color: var(--muted); }
     .node.scope-national { border-top-color: var(--red); background: var(--red-soft); }
     .node.scope-local { border-top-color: var(--teal); background: var(--teal-soft); }
     .node.scope-mixed { background: var(--surface); }
@@ -564,6 +574,7 @@
       .node { padding: 6px; border-width: 1px; border-radius: 8px; }
       .node small { margin-bottom: 1px; font-size: 8px; }
       .node strong { font-size: 12px; }
+      .node-examples { font-size: 9px; }
       .node p { display: none; }
       .vertical-link { height: 13px; }
       .vertical-link::before { width: 1px; }
@@ -589,6 +600,8 @@
       .brand { font-size: 13px; }
       main { padding: 9px 0 48px; }
       .section-heading { display: block; }
+      #map .section-number,
+      #map .section-note { display: none; }
       .section-heading h1 { font-size: 25px; }
       .section-note { margin-top: 3px; font-size: 11px; }
       .route-picker { margin-inline: -12px; border-right: 0; border-left: 0; border-radius: 0; }
@@ -600,6 +613,12 @@
       .ecosystem-label h3 { font-size: 12px; }
       .ecosystem-label span { display: none; }
       .node strong { font-size: 11px; }
+      .node-examples {
+        display: block;
+        margin: 2px 0 0;
+        font-size: 9px;
+        white-space: normal;
+      }
       .node small,
       .branch-label,
       .map-caption { display: none; }
@@ -664,12 +683,14 @@
             <div class="node world-node scope-world" data-node="ipf">
               <small>WORLD</small>
               <a class="node-link" href="https://www.powerlifting.sport/" target="_blank" rel="noreferrer"><strong>IPF 国際パワーリフティング連盟</strong></a>
+              <span class="node-examples">例：世界選手権・アジア選手権</span>
               <p>世界・アジア選手権を運営する国際団体</p>
             </div>
             <div class="vertical-link" aria-hidden="true"></div>
             <div class="node national-node scope-national" data-node="jpa">
               <small>JAPAN / NATIONAL FEDERATION</small>
               <a class="node-link" href="https://www.jpa-powerlifting.or.jp/" target="_blank" rel="noreferrer" data-jump-profile="general"><strong>JPA 日本パワーリフティング協会</strong></a>
+              <span class="node-examples">例：全日本・国スポ本戦</span>
               <p>国内ルール、日本記録、全日本大会、日本代表を統括</p>
             </div>
             <p class="branch-label">JPAの加盟団体・地域組織</p>
@@ -677,21 +698,25 @@
               <div class="node scope-local" data-node="local">
                 <small>LOCAL</small>
                 <a class="node-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer" data-jump-profile="general"><strong>都道府県協会・地方ブロック</strong></a>
+                <span class="node-examples">例：都道府県大会・国スポ予選</span>
                 <p>一般選手の登録窓口。地方大会や公認記録会を開催</p>
               </div>
               <div class="node scope-mixed" data-node="student">
                 <small>UNIVERSITY</small>
                 <a class="node-link" href="https://pando.life/@foo1vvbly2" target="_blank" rel="noreferrer" data-jump-profile="student"><strong>全日本学生連盟</strong></a>
+                <span class="node-examples">例：全日本学生・地方学生</span>
                 <p>大学部活、地方学連、インカレを担当</p>
               </div>
               <div class="node scope-mixed" data-node="highschool">
                 <small>HIGH SCHOOL</small>
                 <a class="node-link" href="https://power-high.sakura.ne.jp/" target="_blank" rel="noreferrer" data-jump-profile="highschool"><strong>全日本高校連盟</strong></a>
+                <span class="node-examples">例：全日本高校・地区予選</span>
                 <p>高校生の全国大会・選抜大会を担当</p>
               </div>
               <div class="node scope-mixed" data-node="company">
                 <small>WORKPLACE</small>
                 <a class="node-link" href="https://jitsugyoudanpower.wixsite.com/my-site" target="_blank" rel="noreferrer" data-jump-profile="company"><strong>全日本実業団連盟</strong></a>
+                <span class="node-examples">例：全日本実業団・実業団ベンチ</span>
                 <p>会社単位の個人戦・団体戦を担当</p>
               </div>
             </div>
@@ -705,12 +730,14 @@
             <div class="node world-node scope-world" data-node="wppo">
               <small>WORLD / PARALYMPIC</small>
               <a class="node-link" href="https://www.paralympic.org/powerlifting" target="_blank" rel="noreferrer"><strong>World Para Powerlifting</strong></a>
+              <span class="node-examples">例：世界選手権・パラリンピック</span>
               <p>パラリンピックにつながる世界競技組織</p>
             </div>
             <div class="vertical-link" aria-hidden="true"></div>
             <div class="node para-node scope-mixed" data-node="jppf">
               <small>JAPAN / PARA FEDERATION</small>
               <a class="node-link" href="https://jppf.jp/" target="_blank" rel="noreferrer" data-jump-profile="para"><strong>JPPF 日本パラ・パワーリフティング連盟</strong></a>
+              <span class="node-examples">例：全日本パラ・地域記録会</span>
               <p>対象は下肢障がい・低身長の選手など。国内大会と代表強化を統括</p>
             </div>
             <p class="branch-label">JPPFの競技活動</p>
@@ -718,11 +745,13 @@
               <div class="node scope-national" data-node="para-national">
                 <small>CHAMPIONSHIP</small>
                 <a class="node-link" href="https://jppf.jp/game" target="_blank" rel="noreferrer"><strong>全日本・国際招待</strong></a>
+                <span class="node-examples">例：全日本パラ・国際招待</span>
                 <p>国内最高レベルと日本代表選考</p>
               </div>
               <div class="node scope-local" data-node="para-local">
                 <small>CHALLENGE</small>
                 <a class="node-link" href="https://jppf.jp/game" target="_blank" rel="noreferrer"><strong>地域大会・記録会</strong></a>
+                <span class="node-examples">例：チャレンジ杯・地域記録会</span>
                 <p>チャレンジカップ、オープン大会など</p>
               </div>
             </div>
@@ -735,6 +764,7 @@
           <div class="node scope-mixed" data-node="jpff">
             <small>BENCH + DEADLIFT</small>
             <a class="node-link" href="https://push-pull.wixsite.com/jpff" target="_blank" rel="noreferrer" data-jump-profile="pushpull"><strong>JPFF プッシュプル</strong></a>
+            <span class="node-examples">例：全日本プッシュプル</span>
           </div>
         </div>
         <p class="map-caption">※ クラシック／エクイップは「団体の違い」ではなく、JPA内の用具ルールの違いです。</p>
@@ -786,6 +816,7 @@
               <td>
                 <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">全日本クラシック</a><span class="meet-records"><span><b class="win">優勝目安</b>男700〜780 / 女480〜540kg</span><span><b class="entry">参加最低</b>男590〜630 / 女380〜420kg</span></span><span class="meet-schedule"><span><b>開催時期</b>1〜3月頃</span><span><b>頻度</b>年1回</span></span></span>
                 <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">全日本ベンチ</a><span class="meet-records"><span><b class="win">優勝目安</b>男180〜210 / 女115〜140kg</span><span><b class="entry">参加最低</b>男145〜160 / 女85〜100kg</span></span><span class="meet-schedule"><span><b>開催時期</b>1〜2月頃</span><span><b>頻度</b>年1回</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">国スポ本戦（公開競技）</a><span class="meet-records"><span><b class="win">優勝目安</b>男650〜720 / 女430〜500kg</span><span><b class="entry">参加最低</b>都道府県・ブロック選考</span></span><span class="meet-schedule"><span><b>開催時期</b>9〜10月頃</span><span><b>頻度</b>年1回</span></span></span>
               </td>
               <td>
                 <span class="meet"><a class="meet-link" href="https://pando.life/@foo1vvbly2" target="_blank" rel="noreferrer">全日本学生</a><span class="meet-records"><span><b class="win">優勝目安</b>男650〜720 / 女400〜470kg</span><span><b class="entry">参加最低</b>男500 / 女310kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>11〜12月頃</span><span><b>頻度</b>年1回</span></span></span>
@@ -797,14 +828,20 @@
             <tr class="scope-local">
               <td class="level-cell"><span>03</span><strong>ブロック</strong></td>
               <td><span class="empty">—</span></td>
-              <td><span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">関東・関西など<br>ブロック選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男620〜700 / 女400〜480kg</span><span><b class="entry">参加最低</b>男450 / 女300kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>5〜11月頃</span><span><b>頻度</b>各地年1回</span></span></span></td>
+              <td>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">関東・関西など<br>ブロック選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男620〜700 / 女400〜480kg</span><span><b class="entry">参加最低</b>男450 / 女300kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>5〜11月頃</span><span><b>頻度</b>各地年1回</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">国スポブロック予選</a><span class="meet-records"><span><b class="win">優勝目安</b>男620〜700 / 女400〜480kg</span><span><b class="entry">参加最低</b>都道府県選考</span></span><span class="meet-schedule"><span><b>開催時期</b>5〜7月頃</span><span><b>頻度</b>年1回</span></span></span>
+              </td>
               <td><span class="empty">—</span></td>
               <td><span class="meet"><a class="meet-link" href="https://pando.life/@foo1vvbly2" target="_blank" rel="noreferrer">地方学生選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男580〜680 / 女360〜440kg</span><span><b class="entry">参加最低</b>男400 / 女250kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>5〜6月・秋</span><span><b>頻度</b>年2回程度</span></span></span></td>
               <td><span class="empty">—</span></td>
             </tr>
             <tr class="scope-local">
               <td class="level-cell"><span>02</span><strong>都道府県</strong></td>
-              <td><span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">都道府県選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男550〜650 / 女350〜430kg</span><span><b class="entry">参加最低</b>男300 / 女180kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>3〜11月頃</span><span><b>頻度</b>各地年1〜2回</span></span></span></td>
+              <td>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">都道府県選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男550〜650 / 女350〜430kg</span><span><b class="entry">参加最低</b>男300 / 女180kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>3〜11月頃</span><span><b>頻度</b>各地年1〜2回</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">国スポ都道府県予選</a><span class="meet-records"><span><b class="win">優勝目安</b>男550〜650 / 女350〜430kg</span><span><b class="entry">参加最低</b>各地の選考基準</span></span><span class="meet-schedule"><span><b>開催時期</b>3〜6月頃</span><span><b>頻度</b>年1回</span></span></span>
+              </td>
               <td><span class="empty">—</span></td>
               <td><span class="empty">—</span></td>
               <td><span class="meet"><a class="meet-link" href="https://power-high.sakura.ne.jp/taikai.html" target="_blank" rel="noreferrer">高校地区予選</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男420〜520 / 女260〜340kg</span><span><b class="entry">参加最低</b>男250 / 女150kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>4〜6月頃</span><span><b>頻度</b>年1回</span></span></span></td>
