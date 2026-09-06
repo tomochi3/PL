@@ -8,21 +8,28 @@
   <style>
     :root {
       color-scheme: light;
-      --ink: #12213d;
-      --muted: #66718a;
-      --paper: #f4f1e9;
-      --surface: #fffdf8;
-      --line: #d8d5cd;
-      --navy: #101a34;
-      --navy-2: #1a2748;
-      --red: #ec604d;
-      --red-soft: #fff0ec;
-      --teal: #1ca799;
-      --teal-soft: #e9f8f5;
-      --violet: #7b67c8;
-      --violet-soft: #f0edfb;
-      --gold: #d79d35;
-      --gold-soft: #fff6de;
+      --ink: #17243a;
+      --muted: #657084;
+      --paper: #f3f4f0;
+      --surface: #fff;
+      --surface-subtle: #f2f4f6;
+      --surface-alt: #fafbfc;
+      --line: #d7dce2;
+      --line-soft: #e8ebef;
+      --navy: #15213a;
+      --navy-2: #23314e;
+      --world: #315ea8;
+      --red: #b9473b;
+      --red-soft: #fbecea;
+      --teal: #147970;
+      --teal-soft: #e7f4f2;
+      --violet: #69579f;
+      --violet-soft: #efedf7;
+      --gold: #9b681a;
+      --gold-soft: #fbf3e2;
+      --gold-line: #d8b56e;
+      --text-on-dark-muted: #c4cddd;
+      --connector: #aeb8c7;
       --white: #fff;
       --shadow: 0 18px 55px rgba(14, 28, 55, .10);
       --radius-lg: 28px;
@@ -61,7 +68,12 @@
 
     button, a { font: inherit; }
 
-    a { color: inherit; }
+    a {
+      color: inherit;
+      -webkit-user-drag: none;
+      -webkit-user-select: text;
+      user-select: text;
+    }
 
     .page-shell {
       width: min(1180px, calc(100% - 40px));
@@ -110,7 +122,7 @@
     .header-nav {
       display: flex;
       gap: 22px;
-      color: #dfe5f3;
+      color: var(--text-on-dark-muted);
       font-size: 13px;
       font-weight: 700;
     }
@@ -191,9 +203,9 @@
       min-height: 64px;
       margin-bottom: 12px;
       padding: 10px 14px;
-      border: 1px solid #d2d8e4;
+      border: 1px solid var(--line);
       border-radius: var(--radius-md);
-      background: #fff;
+      background: var(--surface);
       box-shadow: 0 12px 35px rgba(18, 33, 61, .07);
     }
 
@@ -217,7 +229,7 @@
       padding: 7px 10px;
       border-radius: 999px;
       background: var(--teal-soft);
-      color: #08796f;
+      color: var(--teal);
       font-size: 11px;
       font-weight: 900;
       white-space: nowrap;
@@ -243,7 +255,7 @@
 
     .legend-item { display: inline-flex; align-items: center; gap: 7px; }
     .legend-dot { width: 9px; height: 9px; border-radius: 50%; }
-    .legend-dot.world { background: var(--navy); }
+    .legend-dot.world { background: var(--world); }
     .legend-dot.japan { background: var(--red); }
     .legend-dot.member { background: var(--teal); }
     .legend-dot.related { background: var(--gold); }
@@ -260,7 +272,7 @@
       min-width: 0;
       padding: 14px;
       border-radius: 14px;
-      background: #f6f7fa;
+      background: var(--surface-subtle);
     }
 
     .ecosystem.para { background: #f6f3fc; }
@@ -283,7 +295,7 @@
       padding: 10px;
       border: 2px solid transparent;
       border-radius: 10px;
-      background: #fff;
+      background: var(--surface);
       color: var(--ink);
       text-align: left;
       transition: opacity .25s, border-color .25s, box-shadow .25s, transform .25s;
@@ -298,7 +310,7 @@
 
     .node[href]:focus-visible {
       border-color: var(--red);
-      outline: 3px solid rgba(236, 96, 77, .2);
+      outline: 3px solid rgba(185, 71, 59, .18);
       outline-offset: 2px;
     }
 
@@ -314,8 +326,8 @@
     .node strong { display: block; font-size: 13px; line-height: 1.35; }
     .node p { margin: 4px 0 0; color: var(--muted); font-size: 9px; line-height: 1.45; }
 
-    .node.world-node { background: var(--navy); color: #fff; }
-    .node.world-node small, .node.world-node p { color: #b8c2d8; }
+    .node.world-node { background: var(--world); color: var(--white); }
+    .node.world-node small, .node.world-node p { color: var(--text-on-dark-muted); }
     .node.national-node { background: var(--red-soft); }
     .node.para-node { background: var(--violet-soft); }
 
@@ -331,7 +343,7 @@
       top: 0;
       bottom: 7px;
       width: 2px;
-      background: #aeb7c8;
+      background: var(--connector);
       transform: translateX(-50%);
     }
 
@@ -342,8 +354,8 @@
       bottom: 3px;
       width: 7px;
       height: 7px;
-      border-right: 2px solid #aeb7c8;
-      border-bottom: 2px solid #aeb7c8;
+      border-right: 2px solid var(--connector);
+      border-bottom: 2px solid var(--connector);
       transform: rotate(45deg);
     }
 
@@ -363,18 +375,25 @@
     }
 
     .branch-grid .node { min-height: 76px; }
+    .ecosystem:not(.para) .branch-grid .node { border-top-color: var(--teal); }
+    .ecosystem.para .branch-grid .node { border-top-color: var(--violet); }
 
     .node.is-dimmed { opacity: .38; }
     .node.is-active {
       z-index: 2;
       border-color: var(--red);
-      box-shadow: 0 0 0 5px rgba(236,96,77,.11), 0 13px 32px rgba(18,33,61,.12);
+      box-shadow: 0 0 0 5px rgba(185,71,59,.12), 0 13px 32px rgba(18,33,61,.12);
       opacity: 1;
     }
 
     .para .node.is-active {
       border-color: var(--violet);
-      box-shadow: 0 0 0 5px rgba(123,103,200,.12), 0 13px 32px rgba(18,33,61,.12);
+      box-shadow: 0 0 0 5px rgba(105,87,159,.14), 0 13px 32px rgba(18,33,61,.12);
+    }
+
+    .related-lane .node.is-active {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 5px rgba(155,104,26,.12), 0 13px 32px rgba(18,33,61,.12);
     }
 
     .related-lane {
@@ -384,17 +403,17 @@
       align-items: center;
       margin-top: 10px;
       padding: 9px 13px;
-      border: 1px dashed #d4ad62;
+      border: 1px dashed var(--gold-line);
       border-radius: 18px;
       background: var(--gold-soft);
     }
 
-    .related-lane > strong { color: #926111; font-size: 13px; }
-    .related-lane p { margin: 0; color: #775d2e; font-size: 12px; }
+    .related-lane > strong { color: var(--gold); font-size: 13px; }
+    .related-lane p { margin: 0; color: var(--gold); font-size: 12px; }
 
     .related-lane .node {
       padding: 8px 10px;
-      border-color: rgba(215,157,53,.28);
+      border-color: var(--gold-line);
     }
 
     .map-caption {
@@ -424,7 +443,7 @@
     .level-matrix td {
       padding: 18px 14px;
       border-bottom: 1px solid var(--line);
-      border-left: 1px solid #ebe8e1;
+      border-left: 1px solid var(--line-soft);
       text-align: center;
       vertical-align: middle;
     }
@@ -436,7 +455,7 @@
 
     .level-matrix thead th {
       background: var(--navy);
-      color: #fff;
+      color: var(--white);
       font-size: 12px;
       font-weight: 900;
       letter-spacing: .02em;
@@ -444,19 +463,19 @@
 
     .level-matrix thead th:first-child {
       width: 118px;
-      color: #9eabc7;
+      color: var(--text-on-dark-muted);
       letter-spacing: .1em;
     }
 
     .level-matrix .axis-heading {
       padding-block: 8px;
       background: var(--navy-2);
-      color: #aeb9d0;
+      color: var(--text-on-dark-muted);
       font-size: 10px;
       letter-spacing: .12em;
     }
 
-    .level-cell { background: #f6f4ef; color: var(--ink); }
+    .level-cell { background: var(--surface-subtle); color: var(--ink); }
 
     .level-cell span {
       display: block;
@@ -480,7 +499,7 @@
     .meet + .meet {
       margin-top: 8px;
       padding-top: 7px;
-      border-top: 1px dashed #d9d6ce;
+      border-top: 1px dashed var(--line);
     }
 
     .meet-link {
@@ -519,8 +538,8 @@
       font-weight: 900;
     }
 
-    .meet-records .win { color: #9a6810; }
-    .meet-records .entry { color: #08796f; }
+    .meet-records .win { color: var(--gold); }
+    .meet-records .entry { color: var(--teal); }
 
     .meet-schedule {
       display: grid;
@@ -537,7 +556,7 @@
       display: block;
       padding: 3px 4px;
       border-radius: 4px;
-      background: rgba(18, 33, 61, .055);
+      background: var(--surface-subtle);
     }
 
     .meet-schedule b {
@@ -548,11 +567,9 @@
       font-weight: 900;
     }
     .meet-owner { color: var(--muted); font-size: 10px; font-weight: 800; }
-    .empty { color: #c5c5c2; }
+    .empty { color: #a8b0ba; }
 
-    .level-matrix tbody tr:nth-child(1) td:not(.level-cell) { background: #fffaf0; }
-    .level-matrix tbody tr:nth-child(4) td:not(.level-cell) { background: #fff5f2; }
-    .level-matrix tbody tr:nth-child(5) td:not(.level-cell) { background: #f0f3f9; }
+    .level-matrix tbody tr:nth-child(odd) td:not(.level-cell) { background: var(--surface-alt); }
 
     .scroll-hint {
       display: none;
@@ -940,6 +957,15 @@
     const routeTitle = document.getElementById("route-title");
     const routeDescription = document.getElementById("route-description");
     const routeTag = document.getElementById("route-tag");
+
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest("a[href]");
+      const selection = window.getSelection();
+      if (!link || !selection || selection.isCollapsed || !selection.toString().trim()) return;
+
+      const selectionTouchesLink = link.contains(selection.anchorNode) || link.contains(selection.focusNode);
+      if (selectionTouchesLink) event.preventDefault();
+    });
 
     function setProfile(profileName) {
       const profile = routeProfiles[profileName];
