@@ -50,10 +50,13 @@
       </div>
 
       <div class="prefecture-results-heading">
-        <h2>協会一覧</h2>
+        <h2>日本地図から選ぶ</h2>
         <span class="prefecture-count" id="prefecture-count" aria-live="polite"></span>
       </div>
-      <div class="prefecture-grid" id="prefecture-grid"></div>
+      <div class="japan-map-frame">
+        <nav class="japan-map" id="prefecture-map" aria-label="都道府県協会の日本地図"></nav>
+      </div>
+      <p class="prefecture-empty" id="prefecture-empty" aria-live="polite" hidden>該当する都道府県がありません。</p>
       <p class="prefecture-note">※ 公式サイトがJPAに掲載されていない県は、JPAの加盟都道府県協会一覧へ移動します。</p>
     </section>
   </main>

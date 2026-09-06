@@ -59,35 +59,96 @@ const prefectures = [
   { name: "沖縄県", region: "九州・沖縄", url: "https://okinawa-powerlifting-association.com/" }
 ];
 
+const mapPositions = {
+  北海道: [15, 1],
+  青森県: [14, 2],
+  岩手県: [14, 3],
+  宮城県: [14, 4],
+  秋田県: [13, 3],
+  山形県: [13, 4],
+  福島県: [13, 5],
+  茨城県: [14, 6],
+  栃木県: [13, 6],
+  群馬県: [12, 6],
+  埼玉県: [13, 7],
+  千葉県: [15, 7],
+  東京都: [13, 8],
+  神奈川県: [12, 8],
+  山梨県: [11, 7],
+  新潟県: [12, 5],
+  富山県: [10, 6],
+  石川県: [9, 6],
+  福井県: [9, 7],
+  長野県: [11, 6],
+  静岡県: [11, 8],
+  愛知県: [10, 8],
+  岐阜県: [10, 7],
+  三重県: [9, 8],
+  滋賀県: [8, 7],
+  京都府: [7, 7],
+  大阪府: [7, 8],
+  兵庫県: [6, 7],
+  奈良県: [8, 8],
+  和歌山県: [7, 9],
+  鳥取県: [5, 7],
+  島根県: [4, 7],
+  岡山県: [5, 8],
+  広島県: [4, 8],
+  山口県: [3, 8],
+  徳島県: [6, 9],
+  香川県: [5, 9],
+  愛媛県: [4, 9],
+  高知県: [5, 10],
+  福岡県: [2, 9],
+  佐賀県: [1, 10],
+  長崎県: [1, 11],
+  熊本県: [2, 10],
+  大分県: [3, 9],
+  宮崎県: [3, 10],
+  鹿児島県: [2, 11],
+  沖縄県: [1, 12]
+};
+
 const params = new URLSearchParams(location.search);
 const meetName = meetTypes[params.get("type")] || "都道府県大会";
 const title = document.getElementById("prefecture-title");
 const description = document.getElementById("prefecture-description");
-const grid = document.getElementById("prefecture-grid");
+const map = document.getElementById("prefecture-map");
+const mapFrame = document.querySelector(".japan-map-frame");
+const emptyMessage = document.getElementById("prefecture-empty");
 const count = document.getElementById("prefecture-count");
 const search = document.getElementById("prefecture-search");
 const regionButtons = [...document.querySelectorAll(".region-button")];
 let selectedRegion = "all";
+let mapPositionInitialized = false;
 
 document.title = `${meetName}の都道府県選択｜日本のパワーリフティング団体地図`;
 title.textContent = `${meetName}：都道府県を選ぶ`;
 description.textContent = `${meetName}の最新情報を確認する都道府県協会を選択してください。`;
 
-function createPrefectureLink(prefecture) {
+function createPrefectureLink(prefecture, isActive) {
   const link = document.createElement("a");
   const name = document.createElement("strong");
-  const destination = document.createElement("span");
+  const [column, row] = mapPositions[prefecture.name];
+  const destination = prefecture.fallback ? "JPA加盟団体一覧" : "都道府県協会サイト";
 
   link.className = "prefecture-link";
+  link.classList.toggle("is-muted", !isActive);
+  link.classList.toggle("is-fallback", Boolean(prefecture.fallback));
   link.href = prefecture.url;
   link.target = "_blank";
   link.rel = "noreferrer";
-  link.setAttribute("aria-label", `${prefecture.name}の${meetName}情報を確認`);
-  name.textContent = prefecture.name;
-  destination.textContent = prefecture.fallback ? "JPA加盟団体一覧" : "都道府県協会サイト";
-  if (prefecture.fallback) destination.className = "fallback-label";
+  link.style.setProperty("--map-column", column);
+  link.style.setProperty("--map-row", row);
+  link.setAttribute("aria-label", `${prefecture.name}の${meetName}情報を${destination}で確認`);
+  link.title = `${prefecture.name}｜${destination}`;
+  if (!isActive) {
+    link.tabIndex = -1;
+    link.setAttribute("aria-hidden", "true");
+  }
 
-  link.append(name, destination);
+  name.textContent = prefecture.name;
+  link.append(name);
   return link;
 }
 
@@ -98,18 +159,24 @@ function renderPrefectures() {
     const matchesKeyword = !keyword || prefecture.name.includes(keyword);
     return matchesRegion && matchesKeyword;
   });
+  const activeNames = new Set(filtered.map((prefecture) => prefecture.name));
 
-  grid.replaceChildren();
-  filtered.forEach((prefecture) => grid.append(createPrefectureLink(prefecture)));
+  map.replaceChildren();
+  prefectures.forEach((prefecture) => {
+    map.append(createPrefectureLink(prefecture, activeNames.has(prefecture.name)));
+  });
 
-  if (!filtered.length) {
-    const empty = document.createElement("p");
-    empty.className = "prefecture-empty";
-    empty.textContent = "該当する都道府県がありません。";
-    grid.append(empty);
-  }
-
+  emptyMessage.hidden = filtered.length > 0;
   count.textContent = `${filtered.length}件`;
+
+  if (filtered.length && (selectedRegion !== "all" || keyword)) {
+    const activeLink = map.querySelector(".prefecture-link:not(.is-muted)");
+    const targetLeft = activeLink.offsetLeft - (mapFrame.clientWidth - activeLink.offsetWidth) / 2;
+    mapFrame.scrollTo({ left: targetLeft, behavior: "auto" });
+  } else if (!mapPositionInitialized) {
+    mapFrame.scrollLeft = mapFrame.scrollWidth - mapFrame.clientWidth;
+    mapPositionInitialized = true;
+  }
 }
 
 regionButtons.forEach((button) => {
