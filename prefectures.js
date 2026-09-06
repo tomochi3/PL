@@ -59,96 +59,279 @@ const prefectures = [
   { name: "沖縄県", region: "九州・沖縄", url: "https://okinawa-powerlifting-association.com/" }
 ];
 
-const mapPositions = {
-  北海道: [15, 1],
-  青森県: [14, 2],
-  岩手県: [14, 3],
-  宮城県: [14, 4],
-  秋田県: [13, 3],
-  山形県: [13, 4],
-  福島県: [13, 5],
-  茨城県: [14, 6],
-  栃木県: [13, 6],
-  群馬県: [12, 6],
-  埼玉県: [13, 7],
-  千葉県: [15, 7],
-  東京都: [13, 8],
-  神奈川県: [12, 8],
-  山梨県: [11, 7],
-  新潟県: [12, 5],
-  富山県: [10, 6],
-  石川県: [9, 6],
-  福井県: [9, 7],
-  長野県: [11, 6],
-  静岡県: [11, 8],
-  愛知県: [10, 8],
-  岐阜県: [10, 7],
-  三重県: [9, 8],
-  滋賀県: [8, 7],
-  京都府: [7, 7],
-  大阪府: [7, 8],
-  兵庫県: [6, 7],
-  奈良県: [8, 8],
-  和歌山県: [7, 9],
-  鳥取県: [5, 7],
-  島根県: [4, 7],
-  岡山県: [5, 8],
-  広島県: [4, 8],
-  山口県: [3, 8],
-  徳島県: [6, 9],
-  香川県: [5, 9],
-  愛媛県: [4, 9],
-  高知県: [5, 10],
-  福岡県: [2, 9],
-  佐賀県: [1, 10],
-  長崎県: [1, 11],
-  熊本県: [2, 10],
-  大分県: [3, 9],
-  宮崎県: [3, 10],
-  鹿児島県: [2, 11],
-  沖縄県: [1, 12]
+const mapNamesById = {
+  aichi: "愛知県",
+  akita: "秋田県",
+  aomori: "青森県",
+  chiba: "千葉県",
+  ehime: "愛媛県",
+  fukui: "福井県",
+  fukuoka: "福岡県",
+  fukushima: "福島県",
+  gifu: "岐阜県",
+  gunma: "群馬県",
+  hiroshima: "広島県",
+  hokkaido: "北海道",
+  hyogo: "兵庫県",
+  ibaraki: "茨城県",
+  ishikawa: "石川県",
+  iwate: "岩手県",
+  kagawa: "香川県",
+  kagoshima: "鹿児島県",
+  kanagawa: "神奈川県",
+  kochi: "高知県",
+  kumamoto: "熊本県",
+  kyoto: "京都府",
+  mie: "三重県",
+  miyagi: "宮城県",
+  miyazaki: "宮崎県",
+  nagano: "長野県",
+  nagasaki: "長崎県",
+  nara: "奈良県",
+  niigata: "新潟県",
+  oita: "大分県",
+  okayama: "岡山県",
+  okinawa: "沖縄県",
+  osaka: "大阪府",
+  saga: "佐賀県",
+  saitama: "埼玉県",
+  shiga: "滋賀県",
+  shimane: "島根県",
+  shizuoka: "静岡県",
+  tochigi: "栃木県",
+  tokushima: "徳島県",
+  tokyo: "東京都",
+  tottori: "鳥取県",
+  toyama: "富山県",
+  wakayama: "和歌山県",
+  yamagata: "山形県",
+  yamaguchi: "山口県",
+  yamanashi: "山梨県"
 };
 
+const svgNamespace = "http://www.w3.org/2000/svg";
+const prefecturesByName = new Map(prefectures.map((prefecture) => [prefecture.name, prefecture]));
+const weightClasses = {
+  men: ["59", "66", "74", "83", "93", "105", "120", "120+"],
+  women: ["47", "52", "57", "63", "69", "76", "84", "84+"]
+};
+const recordData = window.prefectureRecordData;
 const params = new URLSearchParams(location.search);
+const meetType = params.get("type");
+const districtsForMeet = recordData.districts?.[meetType] || [];
 const meetName = meetTypes[params.get("type")] || "都道府県大会";
 const title = document.getElementById("prefecture-title");
 const description = document.getElementById("prefecture-description");
 const map = document.getElementById("prefecture-map");
-const mapFrame = document.querySelector(".japan-map-frame");
+const mapPrefectureName = document.getElementById("map-prefecture-name");
 const emptyMessage = document.getElementById("prefecture-empty");
 const count = document.getElementById("prefecture-count");
 const search = document.getElementById("prefecture-search");
 const regionButtons = [...document.querySelectorAll(".region-button")];
+const sexButtons = [...document.querySelectorAll("[data-sex]")];
+const weightClassSelect = document.getElementById("record-weight-class");
+const currentRecordLabel = document.getElementById("record-current-label");
+const recordCoverage = document.getElementById("record-coverage");
+const districtCoverage = document.getElementById("district-coverage");
 let selectedRegion = "all";
-let mapPositionInitialized = false;
+let selectedSex = "men";
+let selectedWeightClass = "66";
 
 document.title = `${meetName}の都道府県選択｜日本のパワーリフティング団体地図`;
 title.textContent = `${meetName}：都道府県を選ぶ`;
 description.textContent = `${meetName}の最新情報を確認する都道府県協会を選択してください。`;
 
-function createPrefectureLink(prefecture, isActive) {
-  const link = document.createElement("a");
-  const name = document.createElement("strong");
-  const [column, row] = mapPositions[prefecture.name];
-  const destination = prefecture.fallback ? "JPA加盟団体一覧" : "都道府県協会サイト";
+function getRecord(prefectureName) {
+  return recordData.records[prefectureName]?.[selectedSex]?.[selectedWeightClass] ?? null;
+}
 
-  link.className = "prefecture-link";
+function getDistrictForPrefecture(prefectureName) {
+  return districtsForMeet.find((district) => district.prefectures.includes(prefectureName));
+}
+
+function getDistrictRecord(district) {
+  return district.records[selectedSex]?.[selectedWeightClass] ?? null;
+}
+
+function formatRecord(record) {
+  return record === null ? "未公開" : `${record}kg`;
+}
+
+function populateWeightClasses() {
+  weightClassSelect.replaceChildren();
+  weightClasses[selectedSex].forEach((weightClass) => {
+    const option = document.createElement("option");
+    option.value = weightClass;
+    option.textContent = `${weightClass}kg級`;
+    weightClassSelect.append(option);
+  });
+  weightClassSelect.value = selectedWeightClass;
+}
+
+function updateRecordControls() {
+  const sexLabel = selectedSex === "men" ? "男子" : "女子";
+  currentRecordLabel.textContent = `${recordData.category} ${sexLabel}${selectedWeightClass}kg級`;
+}
+
+function renderRecordCoverage() {
+  recordCoverage.replaceChildren(
+    document.createTextNode(`公式記録収録：${recordData.sources.length} / ${prefectures.length}都道府県　`)
+  );
+  recordData.sources.forEach((source, index) => {
+    const link = document.createElement("a");
+    link.href = source.url;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    link.textContent = `${source.prefecture}（${source.updatedAt}）`;
+    if (index) recordCoverage.append(document.createTextNode("、"));
+    recordCoverage.append(link);
+  });
+
+  const districtSources = Object.values(recordData.districts || {}).flat();
+  if (districtSources.length) {
+    recordCoverage.append(document.createTextNode("　地区大会："));
+    districtSources.forEach((district, index) => {
+      const link = document.createElement("a");
+      link.href = district.sourceUrl;
+      link.target = "_blank";
+      link.rel = "noreferrer";
+      link.textContent = `${district.name}（${district.heldAt}）`;
+      if (index) recordCoverage.append(document.createTextNode("、"));
+      recordCoverage.append(link);
+    });
+  }
+}
+
+function renderDistrictCoverage() {
+  const research = recordData.districtResearch?.[meetType];
+  if (!research) {
+    districtCoverage.hidden = true;
+    return;
+  }
+
+  districtCoverage.hidden = false;
+  districtCoverage.textContent = `地区新人大会調査（${research.years}公式情報、${research.asOf}時点）：確認 ${research.confirmed.join("、")} ／ 開催確認なし ${research.notConfirmed.join("、")}`;
+}
+
+function createPrefectureLink(location, prefecture, isActive, recordLabels) {
+  const link = document.createElementNS(svgNamespace, "a");
+  const path = document.createElementNS(svgNamespace, "path");
+  const pathTitle = document.createElementNS(svgNamespace, "title");
+  const destination = prefecture.fallback ? "JPA加盟団体一覧" : "都道府県協会サイト";
+  const district = getDistrictForPrefecture(prefecture.name);
+  const displayedRecord = district ? getDistrictRecord(district) : getRecord(prefecture.name);
+  const recordText = formatRecord(displayedRecord);
+  const sexLabel = selectedSex === "men" ? "男子" : "女子";
+  const scopeLabel = district ? `${district.name}大会最高` : prefecture.name;
+  const label = `${prefecture.name}｜${scopeLabel} ${sexLabel}${selectedWeightClass}kg級 ${recordText}｜${destination}`;
+
+  link.classList.add("map-prefecture");
   link.classList.toggle("is-muted", !isActive);
   link.classList.toggle("is-fallback", Boolean(prefecture.fallback));
-  link.href = prefecture.url;
-  link.target = "_blank";
-  link.rel = "noreferrer";
-  link.style.setProperty("--map-column", column);
-  link.style.setProperty("--map-row", row);
+  link.setAttribute("href", prefecture.url);
+  link.setAttribute("target", "_blank");
+  link.setAttribute("rel", "noreferrer");
+  link.dataset.prefecture = prefecture.name;
   link.setAttribute("aria-label", `${prefecture.name}の${meetName}情報を${destination}で確認`);
-  link.title = `${prefecture.name}｜${destination}`;
   if (!isActive) {
-    link.tabIndex = -1;
+    link.setAttribute("tabindex", "-1");
     link.setAttribute("aria-hidden", "true");
   }
 
-  name.textContent = prefecture.name;
-  link.append(name);
+  path.setAttribute("d", location.path);
+  path.setAttribute("vector-effect", "non-scaling-stroke");
+  pathTitle.textContent = label;
+  link.addEventListener("mouseenter", () => { mapPrefectureName.textContent = label; });
+  link.addEventListener("focus", () => { mapPrefectureName.textContent = label; });
+  link.addEventListener("mouseleave", () => {
+    if (document.activeElement !== link) mapPrefectureName.textContent = "";
+  });
+  link.addEventListener("blur", () => { mapPrefectureName.textContent = ""; });
+  link.append(pathTitle, path);
+  recordLabels.push({ path, prefecture, isActive });
+  return link;
+}
+
+function createRecordLabel({ path, prefecture, isActive }) {
+  const text = document.createElementNS(svgNamespace, "text");
+  const bounds = path.getBBox();
+  const record = getRecord(prefecture.name);
+
+  text.classList.add("map-record-value");
+  text.classList.toggle("has-value", record !== null);
+  text.classList.toggle("is-muted", !isActive);
+  text.dataset.prefecture = prefecture.name;
+  text.setAttribute("x", bounds.x + bounds.width / 2);
+  text.setAttribute("y", bounds.y + bounds.height / 2);
+  text.textContent = record === null ? "–" : record;
+  return text;
+}
+
+function createDistrictOutline(district, isActive) {
+  const group = document.createElementNS(svgNamespace, "g");
+  const paths = [];
+
+  group.classList.add("map-district-outline");
+  group.classList.toggle("is-muted", !isActive);
+  group.dataset.district = district.id;
+  district.prefectures.forEach((prefectureName) => {
+    const location = window.japanMapData.locations.find(
+      (item) => mapNamesById[item.id] === prefectureName
+    );
+    if (!location) return;
+    const path = document.createElementNS(svgNamespace, "path");
+    path.setAttribute("d", location.path);
+    path.setAttribute("vector-effect", "non-scaling-stroke");
+    group.append(path);
+    paths.push(path);
+  });
+
+  return { district, group, paths, isActive };
+}
+
+function getCombinedBounds(paths) {
+  const bounds = paths.map((path) => path.getBBox());
+  const left = Math.min(...bounds.map((box) => box.x));
+  const top = Math.min(...bounds.map((box) => box.y));
+  const right = Math.max(...bounds.map((box) => box.x + box.width));
+  const bottom = Math.max(...bounds.map((box) => box.y + box.height));
+  return { x: left, y: top, width: right - left, height: bottom - top };
+}
+
+function createDistrictRecordLink({ district, paths }) {
+  const link = document.createElementNS(svgNamespace, "a");
+  const background = document.createElementNS(svgNamespace, "rect");
+  const name = document.createElementNS(svgNamespace, "text");
+  const value = document.createElementNS(svgNamespace, "text");
+  const bounds = getCombinedBounds(paths);
+  const record = getDistrictRecord(district);
+  const sexLabel = selectedSex === "men" ? "男子" : "女子";
+  const label = `${district.name}｜${sexLabel}${selectedWeightClass}kg級 大会最高${formatRecord(record)}`;
+
+  link.classList.add("map-district-record");
+  link.setAttribute("href", district.url);
+  link.setAttribute("target", "_blank");
+  link.setAttribute("rel", "noreferrer");
+  link.setAttribute("aria-label", `${label}の大会情報を確認`);
+  link.setAttribute("transform", `translate(${bounds.x + bounds.width / 2} ${bounds.y + bounds.height / 2})`);
+  background.setAttribute("x", "-14");
+  background.setAttribute("y", "-9");
+  background.setAttribute("width", "28");
+  background.setAttribute("height", "18");
+  background.setAttribute("rx", "3");
+  name.classList.add("map-district-name");
+  name.setAttribute("y", "-3");
+  name.textContent = district.shortName;
+  value.classList.add("map-district-value");
+  value.setAttribute("y", "5");
+  value.textContent = record === null ? "–" : record;
+  link.addEventListener("mouseenter", () => { mapPrefectureName.textContent = label; });
+  link.addEventListener("focus", () => { mapPrefectureName.textContent = label; });
+  link.addEventListener("mouseleave", () => {
+    if (document.activeElement !== link) mapPrefectureName.textContent = "";
+  });
+  link.addEventListener("blur", () => { mapPrefectureName.textContent = ""; });
+  link.append(background, name, value);
   return link;
 }
 
@@ -160,23 +343,43 @@ function renderPrefectures() {
     return matchesRegion && matchesKeyword;
   });
   const activeNames = new Set(filtered.map((prefecture) => prefecture.name));
-
-  map.replaceChildren();
-  prefectures.forEach((prefecture) => {
-    map.append(createPrefectureLink(prefecture, activeNames.has(prefecture.name)));
+  const svg = document.createElementNS(svgNamespace, "svg");
+  const recordLabels = [];
+  const recordLayer = document.createElementNS(svgNamespace, "g");
+  const districtLayer = document.createElementNS(svgNamespace, "g");
+  const districtEntries = districtsForMeet.map((district) => {
+    const isActive = district.prefectures.some((prefectureName) => activeNames.has(prefectureName));
+    return createDistrictOutline(district, isActive);
   });
+  const districtPrefectures = new Set(
+    districtEntries.filter((entry) => entry.isActive).flatMap((entry) => entry.district.prefectures)
+  );
+
+  svg.classList.add("japan-map-svg");
+  svg.setAttribute("viewBox", window.japanMapData.viewBox);
+  svg.setAttribute("aria-label", "都道府県境界を表示した日本地図");
+  districtLayer.classList.add("map-district-layer");
+  districtEntries.forEach((entry) => districtLayer.append(entry.group));
+  svg.append(districtLayer);
+  window.japanMapData.locations.forEach((location) => {
+    const prefecture = prefecturesByName.get(mapNamesById[location.id]);
+    if (!prefecture) return;
+    svg.append(createPrefectureLink(location, prefecture, activeNames.has(prefecture.name), recordLabels));
+  });
+  map.replaceChildren(svg);
+  recordLayer.classList.add("map-record-layer");
+  recordLabels
+    .filter((recordLabel) => !districtPrefectures.has(recordLabel.prefecture.name))
+    .forEach((recordLabel) => recordLayer.append(createRecordLabel(recordLabel)));
+  districtEntries
+    .filter((entry) => entry.isActive)
+    .forEach((entry) => recordLayer.append(createDistrictRecordLink(entry)));
+  svg.append(recordLayer);
 
   emptyMessage.hidden = filtered.length > 0;
   count.textContent = `${filtered.length}件`;
-
-  if (filtered.length && (selectedRegion !== "all" || keyword)) {
-    const activeLink = map.querySelector(".prefecture-link:not(.is-muted)");
-    const targetLeft = activeLink.offsetLeft - (mapFrame.clientWidth - activeLink.offsetWidth) / 2;
-    mapFrame.scrollTo({ left: targetLeft, behavior: "auto" });
-  } else if (!mapPositionInitialized) {
-    mapFrame.scrollLeft = mapFrame.scrollWidth - mapFrame.clientWidth;
-    mapPositionInitialized = true;
-  }
+  updateRecordControls();
+  mapPrefectureName.textContent = filtered.length === 1 ? filtered[0].name : "";
 }
 
 regionButtons.forEach((button) => {
@@ -190,4 +393,22 @@ regionButtons.forEach((button) => {
 });
 
 search.addEventListener("input", renderPrefectures);
+sexButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    selectedSex = button.dataset.sex;
+    selectedWeightClass = selectedSex === "men" ? "66" : "63";
+    sexButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+    populateWeightClasses();
+    renderPrefectures();
+  });
+});
+
+weightClassSelect.addEventListener("change", () => {
+  selectedWeightClass = weightClassSelect.value;
+  renderPrefectures();
+});
+
+populateWeightClasses();
+renderRecordCoverage();
+renderDistrictCoverage();
 renderPrefectures();

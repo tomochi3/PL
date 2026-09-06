@@ -49,18 +49,45 @@
         </div>
       </div>
 
+      <div class="record-toolbar" aria-label="都道府県記録の表示条件">
+        <div class="record-control">
+          <span class="record-control-label">性別</span>
+          <div class="record-sex-picker" role="group" aria-label="性別を選ぶ">
+            <button type="button" data-sex="men" aria-pressed="true">男子</button>
+            <button type="button" data-sex="women" aria-pressed="false">女子</button>
+          </div>
+        </div>
+        <label class="record-class-control" for="record-weight-class">
+          <span>階級</span>
+          <select id="record-weight-class"></select>
+        </label>
+        <div class="record-current">
+          <span>表示中</span>
+          <strong id="record-current-label">一般クラシック 男子66kg級</strong>
+        </div>
+      </div>
+
       <div class="prefecture-results-heading">
         <h2>日本地図から選ぶ</h2>
-        <span class="prefecture-count" id="prefecture-count" aria-live="polite"></span>
+        <div class="map-result-meta">
+          <span class="record-unit">数字：kg ／ –：未公開 ／ 太枠：地区大会</span>
+          <span class="prefecture-count" id="prefecture-count" aria-live="polite"></span>
+        </div>
       </div>
       <div class="japan-map-frame">
         <nav class="japan-map" id="prefecture-map" aria-label="都道府県協会の日本地図"></nav>
+        <div class="map-prefecture-name" id="map-prefecture-name" aria-live="polite"></div>
       </div>
       <p class="prefecture-empty" id="prefecture-empty" aria-live="polite" hidden>該当する都道府県がありません。</p>
       <p class="prefecture-note">※ 公式サイトがJPAに掲載されていない県は、JPAの加盟都道府県協会一覧へ移動します。</p>
+      <p class="record-coverage" id="record-coverage"></p>
+      <p class="district-coverage" id="district-coverage"></p>
+      <p class="map-credit">地図データ: <a href="https://mapsvg.com/maps/japan" target="_blank" rel="noreferrer">MapSVG</a> / <a href="https://www.npmjs.com/package/@svg-maps/japan" target="_blank" rel="noreferrer">@svg-maps/japan</a>（<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>、リンク機能を追加）</p>
     </section>
   </main>
 
+  <script src="japan-map-data.js" defer></script>
+  <script src="prefecture-records.js" defer></script>
   <script src="prefectures.js" defer></script>
 </body>
 </html>
