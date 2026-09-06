@@ -118,7 +118,7 @@
     .header-nav a { text-decoration: none; }
     .header-nav a:hover { color: var(--white); }
 
-    main { padding: 54px 0 82px; }
+    main { padding: 32px 0 72px; }
 
     main > section { scroll-margin-top: 92px; }
 
@@ -127,7 +127,7 @@
       align-items: end;
       justify-content: space-between;
       gap: 30px;
-      margin-bottom: 30px;
+      margin-bottom: 18px;
     }
 
     .section-number {
@@ -155,8 +155,8 @@
     }
 
     .route-picker {
-      margin-bottom: 28px;
-      padding: 10px;
+      margin-bottom: 12px;
+      padding: 6px;
       border: 1px solid var(--line);
       border-radius: 17px;
       background: rgba(255,255,255,.58);
@@ -168,8 +168,8 @@
 
     .route-button {
       flex: 1 0 auto;
-      min-height: 45px;
-      padding: 8px 16px;
+      min-height: 38px;
+      padding: 6px 14px;
       border: 0;
       border-radius: 11px;
       background: transparent;
@@ -185,12 +185,12 @@
 
     .route-answer {
       display: grid;
-      grid-template-columns: 46px 1fr auto;
-      gap: 17px;
+      grid-template-columns: 38px 1fr auto;
+      gap: 13px;
       align-items: center;
-      min-height: 82px;
-      margin-bottom: 28px;
-      padding: 16px 19px;
+      min-height: 64px;
+      margin-bottom: 12px;
+      padding: 10px 14px;
       border: 1px solid #d2d8e4;
       border-radius: var(--radius-md);
       background: #fff;
@@ -199,19 +199,19 @@
 
     .route-icon {
       display: grid;
-      width: 46px;
-      height: 46px;
+      width: 38px;
+      height: 38px;
       place-items: center;
       border-radius: 14px;
       background: var(--red-soft);
       color: var(--red);
-      font-size: 20px;
+      font-size: 17px;
       font-weight: 900;
     }
 
     .route-answer p { margin: 0; }
-    .route-answer strong { display: block; font-size: 16px; }
-    .route-answer span { color: var(--muted); font-size: 13px; }
+    .route-answer strong { display: block; font-size: 14px; }
+    .route-answer span { color: var(--muted); font-size: 11px; }
 
     .route-tag {
       padding: 7px 10px;
@@ -224,7 +224,7 @@
     }
 
     .map-panel {
-      padding: 30px;
+      padding: 18px;
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
       background: var(--surface);
@@ -234,8 +234,8 @@
     .map-legend {
       display: flex;
       flex-wrap: wrap;
-      gap: 18px;
-      margin-bottom: 24px;
+      gap: 14px;
+      margin-bottom: 12px;
       color: var(--muted);
       font-size: 12px;
       font-weight: 700;
@@ -251,15 +251,15 @@
     .ecosystem-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.8fr) minmax(300px, 1fr);
-      gap: 24px;
+      gap: 12px;
       align-items: stretch;
     }
 
     .ecosystem {
       position: relative;
       min-width: 0;
-      padding: 24px;
-      border-radius: 22px;
+      padding: 14px;
+      border-radius: 14px;
       background: #f6f7fa;
     }
 
@@ -270,7 +270,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 14px;
-      margin-bottom: 18px;
+      margin-bottom: 10px;
     }
 
     .ecosystem-label h3 { margin: 0; font-size: 17px; }
@@ -280,9 +280,9 @@
       position: relative;
       display: block;
       width: 100%;
-      padding: 17px;
+      padding: 10px;
       border: 2px solid transparent;
-      border-radius: 15px;
+      border-radius: 10px;
       background: #fff;
       color: var(--ink);
       text-align: left;
@@ -304,15 +304,15 @@
 
     .node small {
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
       color: var(--muted);
-      font-size: 10px;
+      font-size: 8px;
       font-weight: 900;
       letter-spacing: .1em;
     }
 
-    .node strong { display: block; font-size: 16px; line-height: 1.35; }
-    .node p { margin: 7px 0 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
+    .node strong { display: block; font-size: 13px; line-height: 1.35; }
+    .node p { margin: 4px 0 0; color: var(--muted); font-size: 9px; line-height: 1.45; }
 
     .node.world-node { background: var(--navy); color: #fff; }
     .node.world-node small, .node.world-node p { color: #b8c2d8; }
@@ -321,7 +321,7 @@
 
     .vertical-link {
       position: relative;
-      height: 32px;
+      height: 22px;
     }
 
     .vertical-link::before {
@@ -348,9 +348,9 @@
     }
 
     .branch-label {
-      margin: 20px 0 10px;
+      margin: 9px 0 5px;
       color: var(--muted);
-      font-size: 10px;
+      font-size: 8px;
       font-weight: 900;
       letter-spacing: .12em;
       text-align: center;
@@ -359,10 +359,10 @@
     .branch-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+      gap: 6px;
     }
 
-    .branch-grid .node { min-height: 108px; }
+    .branch-grid .node { min-height: 76px; }
 
     .node.is-dimmed { opacity: .38; }
     .node.is-active {
@@ -379,11 +379,11 @@
 
     .related-lane {
       display: grid;
-      grid-template-columns: 160px 1fr 220px;
-      gap: 16px;
+      grid-template-columns: 130px 1fr 180px;
+      gap: 10px;
       align-items: center;
-      margin-top: 24px;
-      padding: 17px 20px;
+      margin-top: 10px;
+      padding: 9px 13px;
       border: 1px dashed #d4ad62;
       border-radius: 18px;
       background: var(--gold-soft);
@@ -393,17 +393,17 @@
     .related-lane p { margin: 0; color: #775d2e; font-size: 12px; }
 
     .related-lane .node {
-      padding: 13px 15px;
+      padding: 8px 10px;
       border-color: rgba(215,157,53,.28);
     }
 
     .map-caption {
-      margin: 19px 4px 0;
+      margin: 7px 3px 0;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 9px;
     }
 
-    .section-block { margin-top: 84px; }
+    .section-block { margin-top: 72px; }
 
     .level-matrix-wrap {
       overflow-x: auto;
@@ -415,7 +415,7 @@
 
     .level-matrix {
       width: 100%;
-      min-width: 920px;
+      min-width: 1040px;
       border-collapse: collapse;
       table-layout: fixed;
     }
@@ -503,24 +503,50 @@
 
     .meet-records {
       display: grid;
-      gap: 1px;
-      margin-top: 4px;
+      gap: 2px;
+      margin-top: 6px;
       color: var(--muted);
-      font-size: 8px;
+      font-size: 10px;
       font-weight: 700;
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .meet-records span { display: block; }
 
     .meet-records b {
-      margin-right: 3px;
-      font-size: 7px;
+      margin-right: 4px;
+      font-size: 8px;
       font-weight: 900;
     }
 
     .meet-records .win { color: #9a6810; }
     .meet-records .entry { color: #08796f; }
+
+    .meet-schedule {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 3px;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 8px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .meet-schedule > span {
+      display: block;
+      padding: 3px 4px;
+      border-radius: 4px;
+      background: rgba(18, 33, 61, .055);
+    }
+
+    .meet-schedule b {
+      display: block;
+      margin-bottom: 1px;
+      color: var(--ink);
+      font-size: 7px;
+      font-weight: 900;
+    }
     .meet-owner { color: var(--muted); font-size: 10px; font-weight: 800; }
     .empty { color: #c5c5c2; }
 
@@ -558,10 +584,44 @@
       white-space: nowrap;
     }
 
+    @media (max-height: 900px) {
+      main { padding-top: 16px; }
+      .section-heading { margin-bottom: 8px; }
+      .section-heading h1 { font-size: 32px; }
+      .section-note { font-size: 11px; }
+      .route-picker { margin-bottom: 6px; padding: 4px; }
+      .route-button { min-height: 30px; padding: 3px 10px; font-size: 11px; }
+      .route-answer { grid-template-columns: 30px 1fr auto; min-height: 46px; margin-bottom: 6px; padding: 6px 10px; }
+      .route-icon { width: 30px; height: 30px; border-radius: 9px; font-size: 14px; }
+      .route-answer strong { font-size: 12px; }
+      #route-description { display: none; }
+      .route-tag { padding: 4px 7px; font-size: 9px; }
+      .map-panel { padding: 10px; }
+      .map-legend { gap: 10px; margin-bottom: 6px; font-size: 9px; }
+      .legend-dot { width: 7px; height: 7px; }
+      .ecosystem { padding: 8px; border-radius: 10px; }
+      .ecosystem-label { margin-bottom: 5px; }
+      .ecosystem-label h3 { font-size: 12px; }
+      .ecosystem-label span { font-size: 8px; }
+      .node { padding: 6px; border-width: 1px; border-radius: 8px; }
+      .node small { margin-bottom: 1px; font-size: 6px; }
+      .node strong { font-size: 10px; }
+      .node p { display: none; }
+      .vertical-link { height: 13px; }
+      .vertical-link::before { width: 1px; }
+      .vertical-link::after { bottom: 2px; width: 5px; height: 5px; border-width: 0 1px 1px 0; }
+      .branch-label { margin: 5px 0 3px; font-size: 6px; }
+      .branch-grid { gap: 4px; }
+      .branch-grid .node { min-height: 0; }
+      .related-lane { grid-template-columns: 100px 1fr 150px; gap: 6px; margin-top: 5px; padding: 5px 8px; }
+      .related-lane > strong { font-size: 9px; }
+      .related-lane p { font-size: 8px; }
+      .related-lane .node { padding: 5px 7px; }
+      .map-caption { margin-top: 3px; font-size: 7px; }
+    }
+
     @media (max-width: 900px) {
-      .ecosystem-grid { grid-template-columns: 1fr; }
-      .related-lane { grid-template-columns: 130px 1fr; }
-      .related-lane .node { grid-column: 1 / -1; }
+      .ecosystem-grid { grid-template-columns: minmax(0, 1.45fr) minmax(220px, 1fr); }
     }
 
     @media (max-width: 640px) {
@@ -569,17 +629,33 @@
       .header-inner { min-height: 58px; }
       .header-nav { display: none; }
       .brand { font-size: 13px; }
-      main { padding: 36px 0 58px; }
+      main { padding: 12px 0 48px; }
       .section-heading { display: block; }
-      .section-note { margin-top: 12px; }
+      .section-heading h1 { font-size: 25px; }
+      .section-note { margin-top: 3px; font-size: 9px; }
       .route-picker { margin-inline: -12px; border-right: 0; border-left: 0; border-radius: 0; }
-      .route-answer { grid-template-columns: 42px 1fr; }
+      .route-button { padding-inline: 9px; font-size: 9px; }
+      .route-answer { grid-template-columns: 28px 1fr; gap: 8px; }
+      .route-icon { width: 28px; height: 28px; }
+      .route-answer strong { font-size: 10px; }
+      #route-description { display: none; }
       .route-tag { display: none; }
-      .map-panel { padding: 15px; border-radius: 20px; }
-      .ecosystem { padding: 17px; }
-      .branch-grid { grid-template-columns: 1fr; }
+      .map-panel { padding: 6px; border-radius: 12px; }
+      .map-legend { gap: 7px; font-size: 7px; }
+      .ecosystem-grid { grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 4px; align-items: start; }
+      .ecosystem { padding: 6px; }
+      .ecosystem-label { display: block; }
+      .ecosystem-label h3 { font-size: 9px; }
+      .ecosystem-label span { display: none; }
+      .node strong { font-size: 8px; }
+      .node p { display: none; }
+      .branch-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .para .branch-grid { grid-template-columns: 1fr; }
       .branch-grid .node { min-height: 0; }
-      .related-lane { grid-template-columns: 1fr; }
+      .related-lane { grid-template-columns: minmax(0, 1fr) 105px; }
+      .related-lane > strong { font-size: 8px; }
+      .related-lane p { display: none; }
+      .related-lane .node { grid-column: auto; }
       .scroll-hint { display: block; }
       .section-block { margin-top: 64px; }
     }
@@ -755,58 +831,58 @@
               <td><span class="empty">—</span></td>
               <td><span class="empty">—</span></td>
               <td>
-                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">アジア選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男760〜830 / 女520〜570kg</span><span><b class="entry">参加最低</b>男680 / 女450kg前後</span></span></span>
-                <span class="meet"><a class="meet-link" href="https://www.powerlifting.sport/championships/calendar" target="_blank" rel="noreferrer">IPF世界クラシック</a><span class="meet-records"><span><b class="win">優勝目安</b>男830〜900 / 女570〜630kg</span><span><b class="entry">参加最低</b>男720 / 女490kg前後</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">アジア選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男760〜830 / 女520〜570kg</span><span><b class="entry">参加最低</b>男680 / 女450kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>5〜12月頃</span><span><b>頻度</b>年1回程度</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://www.powerlifting.sport/championships/calendar" target="_blank" rel="noreferrer">IPF世界クラシック</a><span class="meet-records"><span><b class="win">優勝目安</b>男830〜900 / 女570〜630kg</span><span><b class="entry">参加最低</b>男720 / 女490kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>6月頃</span><span><b>頻度</b>年1回</span></span></span>
               </td>
-              <td><span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">世界学生</a><span class="meet-records"><span><b class="win">優勝目安</b>男720〜800 / 女470〜540kg</span><span><b class="entry">参加最低</b>男620 / 女400kg前後</span></span></span></td>
-              <td><span class="meet"><a class="meet-link" href="https://jppf.jp/index/page/id/177" target="_blank" rel="noreferrer">世界・パラリンピック</a><span class="meet-records"><span><b class="win">優勝目安</b>男200〜230 / 女115〜140kg</span><span><b class="entry">参加最低</b>男140 / 女75kg前後</span></span></span><span class="meet-owner">WPPO</span></td>
+              <td><span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">世界学生</a><span class="meet-records"><span><b class="win">優勝目安</b>男720〜800 / 女470〜540kg</span><span><b class="entry">参加最低</b>男620 / 女400kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>7〜11月頃</span><span><b>頻度</b>年1回程度</span></span></span></td>
+              <td><span class="meet"><a class="meet-link" href="https://jppf.jp/index/page/id/177" target="_blank" rel="noreferrer">世界・パラリンピック</a><span class="meet-records"><span><b class="win">優勝目安</b>男200〜230 / 女115〜140kg</span><span><b class="entry">参加最低</b>男140 / 女75kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>開催地で変動</span><span><b>頻度</b>世界隔年／パラ4年</span></span></span><span class="meet-owner">WPPO</span></td>
             </tr>
             <tr>
               <td class="level-cell"><span>04</span><strong>全国</strong></td>
               <td><span class="empty">—</span></td>
               <td><span class="empty">—</span></td>
               <td>
-                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">全日本クラシック</a><span class="meet-records"><span><b class="win">優勝目安</b>男700〜780 / 女480〜540kg</span><span><b class="entry">参加最低</b>男590〜630 / 女380〜420kg</span></span></span>
-                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">全日本ベンチ</a><span class="meet-records"><span><b class="win">優勝目安</b>男180〜210 / 女115〜140kg</span><span><b class="entry">参加最低</b>男145〜160 / 女85〜100kg</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">全日本クラシック</a><span class="meet-records"><span><b class="win">優勝目安</b>男700〜780 / 女480〜540kg</span><span><b class="entry">参加最低</b>男590〜630 / 女380〜420kg</span></span><span class="meet-schedule"><span><b>開催時期</b>1〜3月頃</span><span><b>頻度</b>年1回</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/championships.php" target="_blank" rel="noreferrer">全日本ベンチ</a><span class="meet-records"><span><b class="win">優勝目安</b>男180〜210 / 女115〜140kg</span><span><b class="entry">参加最低</b>男145〜160 / 女85〜100kg</span></span><span class="meet-schedule"><span><b>開催時期</b>1〜2月頃</span><span><b>頻度</b>年1回</span></span></span>
               </td>
               <td>
-                <span class="meet"><a class="meet-link" href="https://pando.life/@foo1vvbly2" target="_blank" rel="noreferrer">全日本学生</a><span class="meet-records"><span><b class="win">優勝目安</b>男650〜720 / 女400〜470kg</span><span><b class="entry">参加最低</b>男500 / 女310kg前後</span></span></span>
-                <span class="meet"><a class="meet-link" href="https://power-high.sakura.ne.jp/taikai.html" target="_blank" rel="noreferrer">全日本高校</a><span class="meet-records"><span><b class="win">優勝目安</b>男520〜620 / 女330〜410kg</span><span><b class="entry">参加最低</b>男350 / 女210kg前後</span></span></span>
-                <span class="meet"><a class="meet-link" href="https://jitsugyoudanpower.wixsite.com/my-site" target="_blank" rel="noreferrer">全日本実業団</a><span class="meet-records"><span><b class="win">優勝目安</b>男600〜700 / 女380〜460kg</span><span><b class="entry">参加最低</b>男450 / 女280kg前後</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://pando.life/@foo1vvbly2" target="_blank" rel="noreferrer">全日本学生</a><span class="meet-records"><span><b class="win">優勝目安</b>男650〜720 / 女400〜470kg</span><span><b class="entry">参加最低</b>男500 / 女310kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>11〜12月頃</span><span><b>頻度</b>年1回</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://power-high.sakura.ne.jp/taikai.html" target="_blank" rel="noreferrer">全日本高校</a><span class="meet-records"><span><b class="win">優勝目安</b>男520〜620 / 女330〜410kg</span><span><b class="entry">参加最低</b>男350 / 女210kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>7〜8月頃</span><span><b>頻度</b>年1回</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://jitsugyoudanpower.wixsite.com/my-site" target="_blank" rel="noreferrer">全日本実業団</a><span class="meet-records"><span><b class="win">優勝目安</b>男600〜700 / 女380〜460kg</span><span><b class="entry">参加最低</b>男450 / 女280kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>10月頃</span><span><b>頻度</b>年1回</span></span></span>
               </td>
-              <td><span class="meet"><a class="meet-link" href="https://jppf.jp/game" target="_blank" rel="noreferrer">全日本パラ</a><span class="meet-records"><span><b class="win">優勝目安</b>男150〜180 / 女75〜100kg</span><span><b class="entry">参加最低</b>男70 / 女35kg前後</span></span></span></td>
+              <td><span class="meet"><a class="meet-link" href="https://jppf.jp/game" target="_blank" rel="noreferrer">全日本パラ</a><span class="meet-records"><span><b class="win">優勝目安</b>男150〜180 / 女75〜100kg</span><span><b class="entry">参加最低</b>男70 / 女35kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>冬季中心</span><span><b>頻度</b>年1回</span></span></span></td>
             </tr>
             <tr>
               <td class="level-cell"><span>03</span><strong>ブロック</strong></td>
               <td><span class="empty">—</span></td>
-              <td><span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">関東・関西など<br>ブロック選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男620〜700 / 女400〜480kg</span><span><b class="entry">参加最低</b>男450 / 女300kg前後</span></span></span></td>
+              <td><span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">関東・関西など<br>ブロック選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男620〜700 / 女400〜480kg</span><span><b class="entry">参加最低</b>男450 / 女300kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>5〜11月頃</span><span><b>頻度</b>各地年1回</span></span></span></td>
               <td><span class="empty">—</span></td>
-              <td><span class="meet"><a class="meet-link" href="https://pando.life/@foo1vvbly2" target="_blank" rel="noreferrer">地方学生選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男580〜680 / 女360〜440kg</span><span><b class="entry">参加最低</b>男400 / 女250kg前後</span></span></span></td>
+              <td><span class="meet"><a class="meet-link" href="https://pando.life/@foo1vvbly2" target="_blank" rel="noreferrer">地方学生選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男580〜680 / 女360〜440kg</span><span><b class="entry">参加最低</b>男400 / 女250kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>5〜6月・秋</span><span><b>頻度</b>年2回程度</span></span></span></td>
               <td><span class="empty">—</span></td>
             </tr>
             <tr>
               <td class="level-cell"><span>02</span><strong>都道府県</strong></td>
-              <td><span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">都道府県選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男550〜650 / 女350〜430kg</span><span><b class="entry">参加最低</b>男300 / 女180kg前後</span></span></span></td>
+              <td><span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">都道府県選手権</a><span class="meet-records"><span><b class="win">優勝目安</b>男550〜650 / 女350〜430kg</span><span><b class="entry">参加最低</b>男300 / 女180kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>3〜11月頃</span><span><b>頻度</b>各地年1〜2回</span></span></span></td>
               <td><span class="empty">—</span></td>
               <td><span class="empty">—</span></td>
-              <td><span class="meet"><a class="meet-link" href="https://power-high.sakura.ne.jp/taikai.html" target="_blank" rel="noreferrer">高校地区予選</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男420〜520 / 女260〜340kg</span><span><b class="entry">参加最低</b>男250 / 女150kg前後</span></span></span></td>
+              <td><span class="meet"><a class="meet-link" href="https://power-high.sakura.ne.jp/taikai.html" target="_blank" rel="noreferrer">高校地区予選</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男420〜520 / 女260〜340kg</span><span><b class="entry">参加最低</b>男250 / 女150kg前後</span></span><span class="meet-schedule"><span><b>開催時期</b>4〜6月頃</span><span><b>頻度</b>年1回</span></span></span></td>
               <td><span class="empty">—</span></td>
             </tr>
             <tr>
               <td class="level-cell"><span>01</span><strong>入門</strong></td>
               <td>
-                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">新人大会</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男400〜500 / 女250〜330kg</span><span><b class="entry">参加最低</b>記録制限なし</span></span></span>
-                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">公認記録会</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男400〜500 / 女250〜330kg</span><span><b class="entry">参加最低</b>記録制限なし</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">新人大会</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男400〜500 / 女250〜330kg</span><span><b class="entry">参加最低</b>記録制限なし</span></span><span class="meet-schedule"><span><b>開催時期</b>春〜秋</span><span><b>頻度</b>各地年1回程度</span></span></span>
+                <span class="meet"><a class="meet-link" href="https://www.jpa-powerlifting.or.jp/overview.php" target="_blank" rel="noreferrer">公認記録会</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男400〜500 / 女250〜330kg</span><span><b class="entry">参加最低</b>記録制限なし</span></span><span class="meet-schedule"><span><b>開催時期</b>通年</span><span><b>頻度</b>地域ごとに複数回</span></span></span>
               </td>
               <td><span class="empty">—</span></td>
               <td><span class="empty">—</span></td>
-              <td><span class="meet"><a class="meet-link" href="https://pando.life/@foo1vvbly2" target="_blank" rel="noreferrer">学生新人戦</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男450〜550 / 女280〜350kg</span><span><b class="entry">参加最低</b>記録制限なし</span></span></span></td>
-              <td><span class="meet"><a class="meet-link" href="https://jppf.jp/game" target="_blank" rel="noreferrer">地域記録会</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男90〜130 / 女45〜70kg</span><span><b class="entry">参加最低</b>記録制限なし</span></span></span></td>
+              <td><span class="meet"><a class="meet-link" href="https://pando.life/@foo1vvbly2" target="_blank" rel="noreferrer">学生新人戦</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男450〜550 / 女280〜350kg</span><span><b class="entry">参加最低</b>記録制限なし</span></span><span class="meet-schedule"><span><b>開催時期</b>秋〜春</span><span><b>頻度</b>地区ごとに年1回</span></span></span></td>
+              <td><span class="meet"><a class="meet-link" href="https://jppf.jp/game" target="_blank" rel="noreferrer">地域記録会</a><span class="first-badge">最初はココ</span><span class="meet-records"><span><b class="win">優勝目安</b>男90〜130 / 女45〜70kg</span><span><b class="entry">参加最低</b>記録制限なし</span></span><span class="meet-schedule"><span><b>開催時期</b>春〜冬</span><span><b>頻度</b>地域ごとに年1〜数回</span></span></span></td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p class="matrix-record-note">※ 三種はクラシック男子74kg級／女子63kg級のトータル、パラは男子72kg級／女子61kg級のベンチを基準にした概算です。公式の参加標準は大会要項を確認してください。</p>
+      <p class="matrix-record-note">※ 三種はクラシック男子74kg級／女子63kg級のトータル、パラは男子72kg級／女子61kg級のベンチを基準にした概算です。開催時期・頻度も近年の傾向であり、最新情報と公式の参加標準は大会要項を確認してください。</p>
 
     </section>
 
