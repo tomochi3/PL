@@ -193,16 +193,6 @@ function populateWeightClasses() {
   weightClassSelect.value = selectedWeightClass;
 }
 
-function populateSubmissionPrefectures() {
-  const options = prefectures.map((prefecture) => {
-    const option = document.createElement("option");
-    option.value = prefecture.name;
-    option.textContent = prefecture.name;
-    return option;
-  });
-  submissionPrefecture.append(...options);
-}
-
 function getHttpUrl(value) {
   try {
     const url = new URL(value);
@@ -472,7 +462,6 @@ submissionUrl.addEventListener("input", () => submissionUrl.setCustomValidity(""
 recordSubmissionForm.addEventListener("submit", openGitHubSubmission);
 
 populateWeightClasses();
-populateSubmissionPrefectures();
 updateDatasetVisibility();
 renderRecordCoverage();
 renderDistrictCoverage();
