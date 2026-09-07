@@ -266,9 +266,21 @@ function renderRecordCoverage() {
   const verifiedCount = researchForMeet
     ? researchForMeet.prefectures.filter((item) => item.status === "verified").length
     : sourcesForMeet.length;
+  const audit = researchForMeet?.audit;
+  const auditText = audit?.officialResultFilesChecked
+    ? `　公式結果：${audit.officialResultFilesChecked}ファイル確認　`
+    : "　";
   recordCoverage.replaceChildren(
-    document.createTextNode(`全国調査：${researchedCount} / ${prefectures.length}　結果確認：${verifiedCount}都道府県　`)
+    document.createTextNode(`全国調査：${researchedCount} / ${prefectures.length}${auditText}数値確認：${verifiedCount}都道府県　`)
   );
+  if (audit?.sourceIndexUrl) {
+    const indexLink = document.createElement("a");
+    indexLink.href = audit.sourceIndexUrl;
+    indexLink.target = "_blank";
+    indexLink.rel = "noreferrer";
+    indexLink.textContent = "JPA公式一覧";
+    recordCoverage.append(indexLink, document.createTextNode("　"));
+  }
   sourcesForMeet.forEach((source, index) => {
     const link = document.createElement("a");
     link.href = source.sourceUrl;

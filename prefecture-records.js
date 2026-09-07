@@ -3,6 +3,11 @@
   const research = window.newcomerResearch || null;
   const latestMeetByScope = new Map();
 
+  function getVerifiedResultUrl(scopeType, scopeName, fallbackUrl) {
+    const entries = scopeType === "district" ? research?.districts : research?.prefectures;
+    return entries?.find((item) => item.name === scopeName)?.resultUrl || fallbackUrl;
+  }
+
   rows.forEach((row) => {
     const scopeKey = `${row.scopeType}:${row.scopeName}`;
     const current = latestMeetByScope.get(scopeKey);
@@ -45,7 +50,7 @@
       region: row.region,
       prefectures: row.coveredPrefectures,
       organizerUrl: row.organizerUrl,
-      sourceUrl: row.sourceUrl
+      sourceUrl: getVerifiedResultUrl(row.scopeType, row.scopeName, row.sourceUrl)
     }])
   ).values()];
 

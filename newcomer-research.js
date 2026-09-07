@@ -3,6 +3,12 @@
 window.newcomerResearch = {
   asOf: "2026-09-07",
   period: "2025・2026年",
+  audit: {
+    sourceIndexUrl: "https://www.jpa-powerlifting.or.jp/overview.php",
+    officialResultFilesChecked: 192,
+    officialPowerliftingEntriesChecked: 167,
+    rule: "一般・JPA公認の新人限定大会、または結果表で新人区分を確認できる大会"
+  },
   prefectures: [
     { name: "北海道", checkedUrl: "https://h-power.sakura.ne.jp/", status: "not-found" },
     { name: "青森県", checkedUrl: "https://www.aomoripl.com/%E5%A4%A7%E4%BC%9A%E6%83%85%E5%A0%B1/", status: "not-found" },
@@ -16,7 +22,7 @@ window.newcomerResearch = {
     { name: "群馬県", checkedUrl: "https://www.gunma-powerlifting.com/", status: "not-found" },
     { name: "埼玉県", checkedUrl: "https://spapowerlifting.wixsite.com/official/result/categories/%E5%9F%BC%E7%8E%89%E7%9C%8C%E5%A4%A7%E4%BC%9A-1", status: "not-found" },
     { name: "千葉県", checkedUrl: "https://www.chibapowerliftingassociation.com/p/12/", status: "not-found" },
-    { name: "東京都", checkedUrl: "https://powerlifting.tokyo/", status: "verified", resultUrl: "https://powerlifting.tokyo/wp-content/uploads/2026/02/458c7bb3fbd515a3a11f1b4da8fe095b.pdf" },
+    { name: "東京都", checkedUrl: "https://powerlifting.tokyo/", status: "verified", resultUrl: "https://ros-cms-data.s3.ap-northeast-1.amazonaws.com/_file/10951/3700f28110.pdf" },
     { name: "神奈川県", checkedUrl: "https://kanagawa-power.sakura.ne.jp/wp/", status: "not-found" },
     { name: "山梨県", checkedUrl: "https://www.jpa-powerlifting.or.jp/overview.php", status: "not-found" },
     { name: "新潟県", checkedUrl: "https://niigata-powerlifting.jimdofree.com/%E5%A4%A7%E4%BC%9A%E7%B5%90%E6%9E%9C/", status: "not-found" },
@@ -25,13 +31,13 @@ window.newcomerResearch = {
     { name: "福井県", checkedUrl: "https://fukui-powerlifting.org/", status: "not-found" },
     { name: "長野県", checkedUrl: "https://www.nagano-power.org/%E5%A4%A7%E4%BC%9A%E7%B5%90%E6%9E%9C-%E3%83%AA%E3%82%B6%E3%83%AB%E3%83%88/", status: "not-found" },
     { name: "静岡県", checkedUrl: "http://www7a.biglobe.ne.jp/~jpa-shizuoka/", status: "not-found" },
-    { name: "愛知県", checkedUrl: "https://aichi-powerlifting.jimdofree.com/", status: "verified", resultUrl: "https://aichi-powerlifting.jimdofree.com/app/download/11064181571/%E7%AC%AC9%E5%9B%9E%E6%84%9B%E7%9F%A5%E7%9C%8C%E6%96%B0%E4%BA%BA%E5%A4%A7%E4%BC%9A%E7%B5%90%E6%9E%9C%286%E6%9C%889%E6%97%A5%EF%BC%89.pdf?t=1782124922" },
+    { name: "愛知県", checkedUrl: "https://aichi-powerlifting.jimdofree.com/", status: "verified", resultUrl: "https://ros-cms-data.s3.ap-northeast-1.amazonaws.com/_file/10951/d9f3794a3f.pdf" },
     { name: "岐阜県", checkedUrl: "http://www.gifu-powerlifting.com/", status: "not-found" },
     { name: "三重県", checkedUrl: "https://junglegym-jp.com/mpa/jyouhou/", status: "not-found" },
     { name: "滋賀県", checkedUrl: "https://shigapa.web.fc2.com/", status: "not-found" },
     { name: "京都府", checkedUrl: "https://kyotoppla.com/?page_id=76", status: "not-found" },
     { name: "大阪府", checkedUrl: "https://osaka-power.jp/2026comp/", status: "not-found" },
-    { name: "兵庫県", checkedUrl: "https://hpapower.com/%E7%AC%AC79%E5%9B%9E%E7%9C%8C%E6%B0%91%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%84%E5%A4%A7%E4%BC%9A%E3%80%80%E7%AC%AC43%E5%9B%9E%E5%85%B5%E5%BA%AB%E7%9C%8C%E3%83%91%E3%83%AF%E3%83%BC%E3%83%AA%E3%83%95/", status: "verified", resultUrl: "https://www.hyogo-sports.jp/images/1465.pdf" },
+    { name: "兵庫県", checkedUrl: "https://hpapower.com/%E7%AC%AC79%E5%9B%9E%E7%9C%8C%E6%B0%91%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%84%E5%A4%A7%E4%BC%9A%E3%80%80%E7%AC%AC43%E5%9B%9E%E5%85%B5%E5%BA%AB%E7%9C%8C%E3%83%91%E3%83%AF%E3%83%BC%E3%83%AA%E3%83%95/", status: "verified", resultUrl: "https://ros-cdn.s3.ap-northeast-1.amazonaws.com/hp/img/ros_keiyaku/18309/kekka_250508_003.pdf" },
     { name: "奈良県", checkedUrl: "https://nara-power.com/", status: "not-found" },
     { name: "和歌山県", checkedUrl: "https://wakayam-power.jimdofree.com/", status: "not-found" },
     { name: "鳥取県", checkedUrl: "https://horibarbellclub.wixsite.com/power/%E5%86%99%E7%9C%9F", status: "not-found" },
@@ -57,7 +63,7 @@ window.newcomerResearch = {
     { name: "関東", checkedUrl: "https://spapowerlifting.wixsite.com/official/result/categories/%E9%96%A2%E6%9D%B1%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF%E5%A4%A7%E4%BC%9A", status: "not-found" },
     { name: "北信越", checkedUrl: "https://toyama-powerlifting.org/hokushinetsu/", status: "not-found" },
     { name: "東海", checkedUrl: "https://junglegym-jp.com/mpa/jyouhou/", status: "not-found" },
-    { name: "近畿", checkedUrl: "https://hpapower.com/%E7%AC%AC28%E5%9B%9E%E8%BF%91%E7%95%BF%E3%82%AF%E3%83%A9%E3%82%B7%E3%83%83%E3%82%AF%E3%83%91%E3%83%AF%E3%83%BC%E3%83%AA%E3%83%95%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E9%81%B8%E6%89%8B%E6%A8%A9%E5%A4%A7/", status: "verified", resultUrl: "https://hpapower.com/wp-content/uploads/2026/06/%E8%BF%91%E7%95%BF%E6%96%B0%E4%BA%BA%E3%83%91%E3%83%AF%E3%83%BC-%E5%A4%A7%E4%BC%9A%E7%B5%90%E6%9E%9C%E8%A8%82%E6%AD%A3.pdf" },
+    { name: "近畿", checkedUrl: "https://hpapower.com/%E7%AC%AC28%E5%9B%9E%E8%BF%91%E7%95%BF%E3%82%AF%E3%83%A9%E3%82%B7%E3%83%83%E3%82%AF%E3%83%91%E3%83%AF%E3%83%BC%E3%83%AA%E3%83%95%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E9%81%B8%E6%89%8B%E6%A8%A9%E5%A4%A7/", status: "verified", resultUrl: "https://ros-cms-data.s3.ap-northeast-1.amazonaws.com/_file/10951/73e790a17d.pdf" },
     { name: "中国", checkedUrl: "https://hiroshima-power.moo.jp/information/result/", status: "not-found" },
     { name: "四国", checkedUrl: "https://www.kpa-power.com/competitions/competitions.html", status: "not-found" },
     { name: "九州・沖縄", checkedUrl: "https://ameblo.jp/fukuoka-power/theme-10080909689.html", status: "not-found" }
@@ -69,6 +75,7 @@ window.newcomerResearch = {
     { name: "広島県", label: "ビギナーズ パワー＆ベンチ", reason: "非公式大会", url: "https://hiroshima-power.moo.jp/competition/" },
     { name: "大分県", label: "チャレンジ部門", reason: "2024年結果のため調査期間外", url: "https://ros-cdn.s3.ap-northeast-1.amazonaws.com/hp/img/ros_keiyaku/18309/result241202.pdf" },
     { name: "宮城県", label: "東北新人学生大会", reason: "学生大会", url: "https://miyagipower.web.fc2.com/2024-12-8gakuseipowerentry.pdf" },
-    { name: "茨城県", label: "県高等学校新人大会", reason: "高校大会", url: "https://powerlifting-ibaraki.jp/?page_id=7024" }
+    { name: "茨城県", label: "県高等学校新人大会", reason: "高校大会", url: "https://powerlifting-ibaraki.jp/?page_id=7024" },
+    { name: "福島県", label: "2025県選手権の最優秀新人賞", reason: "新人区分ではなく一般83kg級選手への表彰", url: "https://ros-cdn.s3.ap-northeast-1.amazonaws.com/hp/img/ros_keiyaku/18309/kekka_260114_10.pdf" }
   ]
 };
