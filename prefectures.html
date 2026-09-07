@@ -49,7 +49,7 @@
         </div>
       </div>
 
-      <div class="record-toolbar" aria-label="都道府県記録の表示条件">
+      <div class="record-toolbar" id="record-toolbar" aria-label="新人大会の最高Total表示条件">
         <div class="record-control">
           <span class="record-control-label">性別</span>
           <div class="record-sex-picker" role="group" aria-label="性別を選ぶ">
@@ -63,7 +63,7 @@
         </label>
         <div class="record-current">
           <span>表示中</span>
-          <strong id="record-current-label">一般クラシック 男子66kg級</strong>
+          <strong id="record-current-label">新人大会・クラシック 男子66kg級</strong>
         </div>
       </div>
 
@@ -74,23 +74,49 @@
             <input type="checkbox" id="map-number-toggle">
             <span>数字を表示</span>
           </label>
-          <span class="record-unit">表示時：kg ／ –：未公開 ／ 太枠：地区大会</span>
+          <span class="record-unit" id="record-unit">kg ／ –：未確認</span>
           <span class="prefecture-count" id="prefecture-count" aria-live="polite"></span>
         </div>
       </div>
-      <div class="japan-map-frame">
+      <div class="japan-map-frame" id="japan-map-frame">
         <nav class="japan-map" id="prefecture-map" aria-label="都道府県協会の日本地図"></nav>
+        <aside class="district-callouts" id="district-callouts" aria-label="新人大会の確認状況" hidden></aside>
         <div class="map-prefecture-name" id="map-prefecture-name" aria-live="polite"></div>
       </div>
+      <p class="record-scope-note" id="record-scope-note">一般・JPA公認のみ　／　県＝地図内　／　地区＝地図外</p>
       <p class="prefecture-empty" id="prefecture-empty" aria-live="polite" hidden>該当する都道府県がありません。</p>
       <p class="prefecture-note">※ 公式サイトがJPAに掲載されていない県は、JPAの加盟都道府県協会一覧へ移動します。</p>
       <p class="record-coverage" id="record-coverage"></p>
       <p class="district-coverage" id="district-coverage"></p>
       <p class="map-credit">地図データ: <a href="https://mapsvg.com/maps/japan" target="_blank" rel="noreferrer">MapSVG</a> / <a href="https://www.npmjs.com/package/@svg-maps/japan" target="_blank" rel="noreferrer">@svg-maps/japan</a>（<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>、リンク機能を追加）</p>
     </section>
+
+    <section class="record-submission" aria-labelledby="record-submission-title">
+      <div class="record-submission-heading">
+        <span class="section-number">RECORD SUBMISSION</span>
+        <h2 id="record-submission-title">記録URLを送る</h2>
+        <p>都道府県と公式結果を指定してください。</p>
+      </div>
+      <form class="record-submission-form" id="record-submission-form" action="https://github.com/tomochi3/PL/issues/new" method="get" target="_blank">
+        <label class="record-submission-field" for="submission-prefecture">
+          <span>都道府県</span>
+          <select id="submission-prefecture" required>
+            <option value="">選択してください</option>
+          </select>
+        </label>
+        <label class="record-submission-field record-submission-url" for="submission-url">
+          <span>公式結果URL</span>
+          <input id="submission-url" type="url" inputmode="url" placeholder="https://…" autocomplete="url" required>
+        </label>
+        <button class="record-submission-button" type="submit">GitHubで送る</button>
+        <p class="record-submission-help">GitHubで内容を確認後、Issueを投稿します。</p>
+      </form>
+    </section>
   </main>
 
   <script src="japan-map-data.js" defer></script>
+  <script src="newcomer-results.js" defer></script>
+  <script src="newcomer-research.js" defer></script>
   <script src="prefecture-records.js" defer></script>
   <script src="prefectures.js" defer></script>
 </body>

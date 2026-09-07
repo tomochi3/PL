@@ -1019,6 +1019,8 @@ h2 {
 
 .japan-map-frame {
   position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -1027,6 +1029,11 @@ h2 {
     linear-gradient(90deg, rgba(20, 121, 112, .05) 1px, transparent 1px),
     #eef3f3;
   background-size: 26px 26px;
+}
+
+.japan-map-frame.has-district-callouts {
+  grid-template-columns: minmax(0, 1fr) 190px;
+  column-gap: 18px;
 }
 
 .japan-map {
@@ -1079,18 +1086,6 @@ h2 {
 .map-prefecture.is-fallback:hover path,
 .map-prefecture.is-fallback:focus path { fill: var(--gold); }
 
-.map-district-layer { pointer-events: none; }
-
-.map-district-outline path {
-  fill: none;
-  stroke: var(--red);
-  stroke-width: 5px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.map-district-outline.is-muted { opacity: .1; }
-
 .map-record-layer { pointer-events: none; }
 .map-record-layer.is-hidden { display: none; }
 
@@ -1108,30 +1103,83 @@ h2 {
 .map-record-value.has-value { fill: var(--red); font-size: 7px; }
 .map-record-value.is-muted { opacity: .12; }
 
-.map-district-record { pointer-events: auto; cursor: pointer; }
-
-.map-district-record rect {
-  fill: var(--navy);
-  stroke: var(--white);
-  stroke-width: 1px;
-  transition: fill .18s;
+.district-callouts {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 18px 18px 18px 0;
 }
 
-.map-district-record:hover rect,
-.map-district-record:focus rect { fill: var(--red); }
+.district-callouts[hidden] { display: none; }
 
-.map-district-record:focus { outline: none; }
+.district-callout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 3px;
+  padding: 12px 12px 12px 15px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--red);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(14, 28, 55, .12);
+}
 
-.map-district-name,
-.map-district-value {
-  fill: var(--white);
+.district-callout::before {
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  width: 12px;
+  height: 12px;
+  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  background: var(--surface);
+  content: "";
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.district-callout:hover,
+.district-callout:focus-visible {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.district-callout.is-unverified { border-left-color: var(--gold); }
+
+.district-callout.is-unverified:hover,
+.district-callout.is-unverified:focus-visible {
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+.district-callout.is-unverified .district-callout-scope { color: var(--gold); }
+
+.district-callout-scope {
+  color: var(--red);
+  font-size: 9px;
   font-weight: 900;
-  text-anchor: middle;
-  pointer-events: none;
+  letter-spacing: .08em;
 }
 
-.map-district-name { font-size: 4px; }
-.map-district-value { font-size: 7px; }
+.district-callout strong { font-size: 18px; }
+
+.district-callout-value {
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.district-callout small {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.district-callouts.numbers-hidden .district-callout-value { display: none; }
 
 .map-prefecture-name {
   position: absolute;
@@ -1154,6 +1202,13 @@ h2 {
   margin: 14px 0 0;
   color: var(--muted);
   font-size: 11px;
+}
+
+.record-scope-note {
+  margin: 9px 0 0;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 800;
 }
 
 .record-coverage {
@@ -1196,6 +1251,82 @@ h2 {
   text-align: center;
 }
 
+.record-submission {
+  margin-top: 52px;
+  padding-top: 30px;
+  border-top: 1px solid var(--line);
+}
+
+.record-submission-heading { margin-bottom: 14px; }
+.record-submission-heading h2 { font-size: 22px; }
+
+.record-submission-heading p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.record-submission-form {
+  display: grid;
+  grid-template-columns: minmax(160px, 220px) minmax(280px, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.record-submission-field span {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.record-submission-field select,
+.record-submission-field input {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 11px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+}
+
+.record-submission-field select:focus,
+.record-submission-field input:focus,
+.record-submission-button:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+
+.record-submission-button {
+  min-height: 42px;
+  padding: 8px 16px;
+  border: 1px solid var(--navy);
+  border-radius: 6px;
+  background: var(--navy);
+  color: var(--white);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.record-submission-button:hover { background: var(--navy-2); }
+
+.record-submission-help {
+  grid-column: 1 / -1;
+  margin: -2px 0 0;
+  color: var(--muted);
+  font-size: 10px;
+}
+
 @media (max-width: 640px) {
   .prefecture-main { padding-top: 24px; }
   .prefecture-heading { margin-bottom: 16px; }
@@ -1207,9 +1338,20 @@ h2 {
   .prefecture-results-heading { display: block; }
   .map-result-meta { justify-content: flex-end; gap: 10px; margin-top: 7px; }
   .record-unit { display: none; }
+  .japan-map-frame.has-district-callouts { grid-template-columns: minmax(0, 1fr); }
   .japan-map { padding: 12px; }
   .japan-map-svg { width: min(100%, 360px); }
+  .district-callouts { padding: 0 12px 12px; }
+  .district-callout { padding: 10px 12px; }
+  .district-callout::before {
+    top: -7px;
+    left: 28px;
+    transform: rotate(135deg);
+  }
   .map-record-value { font-size: 6px; }
   .map-record-value.has-value { font-size: 6.5px; }
   .map-prefecture-name { top: 8px; left: 8px; }
+  .record-submission { margin-top: 40px; padding-top: 24px; }
+  .record-submission-form { grid-template-columns: minmax(0, 1fr); padding: 12px; }
+  .record-submission-button { width: 100%; }
 }
