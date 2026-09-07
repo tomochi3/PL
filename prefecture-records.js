@@ -1,25 +1,18 @@
 (() => {
-  const rows = window.newcomerResultRows || [];
   const research = window.newcomerResearch || null;
-  const latestMeetByScope = new Map();
+  const newcomerRows = (window.newcomerResultRows || []).map((row) => ({
+    ...row,
+    recordKind: "newcomer"
+  }));
+  const championshipRows = (window.prefectureChampionshipResultRows || []).map((row) => ({
+    ...row,
+    recordKind: "championship"
+  }));
 
-  function getVerifiedResultUrl(scopeType, scopeName, fallbackUrl) {
+  function getVerifiedNewcomerUrl(scopeType, scopeName, fallbackUrl) {
     const entries = scopeType === "district" ? research?.districts : research?.prefectures;
     return entries?.find((item) => item.name === scopeName)?.resultUrl || fallbackUrl;
   }
-
-  rows.forEach((row) => {
-    const scopeKey = `${row.scopeType}:${row.scopeName}`;
-    const current = latestMeetByScope.get(scopeKey);
-    if (!current || row.heldAt > current.heldAt) {
-      latestMeetByScope.set(scopeKey, row);
-    }
-  });
-
-  const currentRows = rows.filter((row) => {
-    const scopeKey = `${row.scopeType}:${row.scopeName}`;
-    return latestMeetByScope.get(scopeKey)?.meetId === row.meetId;
-  });
 
   function addRecord(target, scopeName, row) {
     target[scopeName] ||= { men: {}, women: {} };
@@ -27,63 +20,100 @@
     target[scopeName][row.sex][row.weightClass] = current == null
       ? row.total
       : Math.max(current, row.total);
+    const allClasses = target[scopeName][row.sex].all;
+    target[scopeName][row.sex].all = allClasses == null
+      ? row.total
+      : Math.max(allClasses, row.total);
   }
 
-  const prefectureRecords = {};
-  const districtRecords = {};
-  currentRows.forEach((row) => {
-    if (row.scopeType === "prefecture") {
-      addRecord(prefectureRecords, row.scopeName, row);
-    } else if (row.scopeType === "district") {
-      addRecord(districtRecords, row.scopeName, row);
-    }
-  });
+  function buildDataset(rows, useResearchUrls = false) {
+    const latestMeetByScope = new Map();
+    rows.forEach((row) => {
+      const scopeKey = `${row.scopeType}:${row.scopeName}`;
+      const current = latestMeetByScope.get(scopeKey);
+      if (!current || row.heldAt > current.heldAt) latestMeetByScope.set(scopeKey, row);
+    });
 
-  const meets = [...new Map(
-    currentRows.map((row) => [row.meetId, {
-      id: row.meetId,
-      eventName: row.eventName,
-      heldAt: row.heldAt,
-      hostPrefecture: row.hostPrefecture,
-      scopeType: row.scopeType,
-      scopeName: row.scopeName,
-      region: row.region,
-      prefectures: row.coveredPrefectures,
-      organizerUrl: row.organizerUrl,
-      sourceUrl: getVerifiedResultUrl(row.scopeType, row.scopeName, row.sourceUrl)
-    }])
-  ).values()];
+    const currentRows = rows.filter((row) => {
+      const scopeKey = `${row.scopeType}:${row.scopeName}`;
+      return latestMeetByScope.get(scopeKey)?.meetId === row.meetId;
+    });
+    const prefectureRecords = {};
+    const districtRecords = {};
+    currentRows.forEach((row) => {
+      const target = row.scopeType === "prefecture" ? prefectureRecords : districtRecords;
+      addRecord(target, row.scopeName, row);
+    });
 
-  const prefectureMeets = Object.fromEntries(
-    meets
-      .filter((meet) => meet.scopeType === "prefecture")
-      .map((meet) => [meet.scopeName, meet])
-  );
+    const meets = [...new Map(
+      currentRows.map((row) => [row.meetId, {
+        id: row.meetId,
+        eventName: row.eventName,
+        heldAt: row.heldAt,
+        hostPrefecture: row.hostPrefecture,
+        scopeType: row.scopeType,
+        scopeName: row.scopeName,
+        region: row.region,
+        prefectures: row.coveredPrefectures,
+        newcomerCategory: row.newcomerCategory,
+        recordKind: row.recordKind,
+        sourceScope: row.sourceScope,
+        organizerUrl: row.organizerUrl,
+        sourceUrl: useResearchUrls
+          ? getVerifiedNewcomerUrl(row.scopeType, row.scopeName, row.sourceUrl)
+          : row.sourceUrl
+      }])
+    ).values()];
+    const prefectureMeets = Object.fromEntries(
+      meets
+        .filter((meet) => meet.scopeType === "prefecture")
+        .map((meet) => [meet.scopeName, meet])
+    );
+    const districtMeets = meets
+      .filter((meet) => meet.scopeType === "district")
+      .map((meet) => ({
+        ...meet,
+        name: `${meet.scopeName}新人`,
+        shortName: meet.scopeName,
+        url: meet.organizerUrl,
+        records: districtRecords[meet.scopeName] || { men: {}, women: {} }
+      }));
 
-  const districtMeets = meets
-    .filter((meet) => meet.scopeType === "district")
-    .map((meet) => ({
-      ...meet,
-      name: `${meet.scopeName}新人`,
-      shortName: meet.scopeName,
-      url: meet.organizerUrl,
-      records: districtRecords[meet.scopeName] || { men: {}, women: {} }
-    }));
+    return {
+      currentRows,
+      prefectureRecords,
+      prefectureMeets,
+      districtMeets,
+      sources: meets.filter((meet) => meet.scopeType === "prefecture")
+    };
+  }
+
+  const rookie = buildDataset(newcomerRows, true);
+  const championship = buildDataset(championshipRows);
+  const rookiePrefectureCount = rookie.sources.length;
+  const championshipPrefectureCount = championship.sources.length;
 
   window.prefectureRecordData = {
-    category: "新人大会・クラシック",
+    categories: {
+      rookie: "新人大会最高Total",
+      championship: "県大会最高Total"
+    },
     asOf: research?.asOf || "2026-09-07",
     recordsByMeetType: {
-      rookie: prefectureRecords
+      rookie: rookie.prefectureRecords,
+      championship: championship.prefectureRecords
     },
     prefectureMeetsByMeetType: {
-      rookie: prefectureMeets
+      rookie: rookie.prefectureMeets,
+      championship: championship.prefectureMeets
     },
     districts: {
-      rookie: districtMeets
+      rookie: rookie.districtMeets,
+      championship: []
     },
     sourcesByMeetType: {
-      rookie: meets.filter((meet) => meet.scopeType === "prefecture")
+      rookie: rookie.sources,
+      championship: championship.sources
     },
     districtResearch: {
       rookie: {
@@ -98,8 +128,24 @@
       }
     },
     researchByMeetType: {
-      rookie: research
+      rookie: research,
+      championship: null
     },
-    resultRows: currentRows
+    resultRowsByMeetType: {
+      rookie: rookie.currentRows,
+      championship: championship.currentRows
+    },
+    countsByMeetType: {
+      rookie: {
+        confirmed: rookiePrefectureCount,
+        unconfirmed: 47 - rookiePrefectureCount
+      },
+      championship: {
+        confirmed: championshipPrefectureCount,
+        unconfirmed: 47 - championshipPrefectureCount
+      }
+    },
+    audit: research?.audit || null,
+    resultRows: [...rookie.currentRows, ...championship.currentRows]
   };
 })();

@@ -5,8 +5,11 @@ window.newcomerResearch = {
   period: "2025・2026年",
   audit: {
     sourceIndexUrl: "https://www.jpa-powerlifting.or.jp/overview.php",
-    officialResultFilesChecked: 192,
-    officialPowerliftingEntriesChecked: 167,
+    officialIndexYears: "2021〜2026年",
+    officialResultFilesChecked: 513,
+    officialPowerliftingEntriesChecked: 464,
+    prefectureSearchesCompleted: 44,
+    imageOnlyFilesReviewed: 12,
     rule: "一般・JPA公認の新人限定大会、または結果表で新人区分を確認できる大会"
   },
   prefectures: [
@@ -76,6 +79,7 @@ window.newcomerResearch = {
     { name: "大分県", label: "チャレンジ部門", reason: "2024年結果のため調査期間外", url: "https://ros-cdn.s3.ap-northeast-1.amazonaws.com/hp/img/ros_keiyaku/18309/result241202.pdf" },
     { name: "宮城県", label: "東北新人学生大会", reason: "学生大会", url: "https://miyagipower.web.fc2.com/2024-12-8gakuseipowerentry.pdf" },
     { name: "茨城県", label: "県高等学校新人大会", reason: "高校大会", url: "https://powerlifting-ibaraki.jp/?page_id=7024" },
-    { name: "福島県", label: "2025県選手権の最優秀新人賞", reason: "新人区分ではなく一般83kg級選手への表彰", url: "https://ros-cdn.s3.ap-northeast-1.amazonaws.com/hp/img/ros_keiyaku/18309/kekka_260114_10.pdf" }
+    { name: "福島県", label: "2025県選手権の最優秀新人賞", reason: "新人区分ではなく一般83kg級選手への表彰", url: "https://ros-cdn.s3.ap-northeast-1.amazonaws.com/hp/img/ros_keiyaku/18309/kekka_260114_10.pdf" },
+    { name: "石川県", label: "2023金沢市民大会の優秀新人賞", reason: "新人区分ではなく一般参加選手への表彰", url: "https://www.jpa-powerlifting.or.jp/pdf/rural/2023/0719/gl-ishikawa-pb.pdf" }
   ]
 };

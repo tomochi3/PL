@@ -846,6 +846,39 @@ h2 {
   font-size: 14px;
 }
 
+.record-version-switch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(100%, 420px);
+  margin: 0 0 18px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-subtle);
+}
+
+.record-version-switch a {
+  min-height: 42px;
+  padding: 10px 14px;
+  border-radius: 5px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-align: center;
+  text-decoration: none;
+}
+
+.record-version-switch a[aria-current="page"] {
+  background: var(--navy);
+  color: var(--white);
+  box-shadow: 0 2px 8px rgba(14, 28, 55, .16);
+}
+
+.record-version-switch a:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+
 .prefecture-toolbar {
   display: grid;
   grid-template-columns: minmax(220px, 300px) 1fr;
@@ -935,6 +968,10 @@ h2 {
   background: var(--surface);
 }
 
+.record-toolbar.is-championship {
+  grid-template-columns: minmax(140px, 190px) 1fr;
+}
+
 .record-control-label,
 .record-class-control span,
 .record-current span {
@@ -984,6 +1021,7 @@ h2 {
   display: block;
   color: var(--ink);
   font-size: 14px;
+  white-space: nowrap;
 }
 
 .map-result-meta {
@@ -1086,6 +1124,17 @@ h2 {
 .map-prefecture.is-fallback:hover path,
 .map-prefecture.is-fallback:focus path { fill: var(--gold); }
 
+.map-prefecture.is-reference-record:not(.is-muted) path {
+  fill: #f4f6f8;
+  stroke: #718096;
+}
+
+.map-prefecture.is-reference-record:hover path,
+.map-prefecture.is-reference-record:focus path {
+  fill: var(--navy);
+  stroke: var(--navy);
+}
+
 .map-record-layer { pointer-events: none; }
 .map-record-layer.is-hidden { display: none; }
 
@@ -1101,6 +1150,7 @@ h2 {
 }
 
 .map-record-value.has-value { fill: var(--red); font-size: 7px; }
+.map-record-value.has-value.is-reference-record { fill: var(--navy); }
 .map-record-value.is-muted { opacity: .12; }
 
 .district-callouts {
@@ -1334,6 +1384,7 @@ h2 {
   .prefecture-toolbar { grid-template-columns: minmax(0, 1fr); padding: 10px; }
   .prefecture-toolbar > * { min-width: 0; }
   .record-toolbar { grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
+  .record-toolbar.is-championship { grid-template-columns: 1fr; }
   .record-current { grid-column: 1 / -1; }
   .prefecture-results-heading { display: block; }
   .map-result-meta { justify-content: flex-end; gap: 10px; margin-top: 7px; }

@@ -3,7 +3,7 @@ const jpaOverviewUrl = "https://www.jpa-powerlifting.or.jp/overview.php";
 const meetTypes = {
   rookie: "新人大会",
   record: "公認記録会",
-  championship: "都道府県選手権",
+  championship: "県大会",
   kokuspo: "国スポ都道府県予選",
   block: "ブロック選手権",
   "kokuspo-block": "国スポブロック予選"
@@ -112,8 +112,8 @@ const mapNamesById = {
 const svgNamespace = "http://www.w3.org/2000/svg";
 const prefecturesByName = new Map(prefectures.map((prefecture) => [prefecture.name, prefecture]));
 const weightClasses = {
-  men: ["59", "66", "74", "83", "93", "105", "120", "120+"],
-  women: ["47", "52", "57", "63", "69", "76", "84", "84+"]
+  men: ["all", "59", "66", "74", "83", "93", "105", "120", "120+"],
+  women: ["all", "47", "52", "57", "63", "69", "76", "84", "84+"]
 };
 const recordData = window.prefectureRecordData;
 const params = new URLSearchParams(location.search);
@@ -123,9 +123,13 @@ const recordsForMeet = recordData.recordsByMeetType?.[meetType] || {};
 const prefectureMeetsForMeet = recordData.prefectureMeetsByMeetType?.[meetType] || {};
 const sourcesForMeet = recordData.sourcesByMeetType?.[meetType] || [];
 const researchForMeet = recordData.researchByMeetType?.[meetType] || null;
+const resultRowsForMeet = recordData.resultRowsByMeetType?.[meetType] || [];
+const countsForMeet = recordData.countsByMeetType?.[meetType] || { confirmed: 0, unconfirmed: 47 };
 const meetName = meetTypes[meetType] || "都道府県大会";
+const recordCategory = recordData.categories?.[meetType] || "大会最高Total";
 const title = document.getElementById("prefecture-title");
 const description = document.getElementById("prefecture-description");
+const meetViewLinks = [...document.querySelectorAll("[data-meet-view]")];
 const map = document.getElementById("prefecture-map");
 const mapPrefectureName = document.getElementById("map-prefecture-name");
 const emptyMessage = document.getElementById("prefecture-empty");
@@ -141,6 +145,8 @@ const districtCallouts = document.getElementById("district-callouts");
 const japanMapFrame = document.getElementById("japan-map-frame");
 const mapNumberToggle = document.getElementById("map-number-toggle");
 const recordToolbar = document.getElementById("record-toolbar");
+const recordSexControl = document.querySelector(".record-control");
+const recordClassControl = document.querySelector(".record-class-control");
 const recordUnit = document.getElementById("record-unit");
 const recordScopeNote = document.getElementById("record-scope-note");
 const recordSubmissionForm = document.getElementById("record-submission-form");
@@ -149,12 +155,28 @@ const submissionUrl = document.getElementById("submission-url");
 const hasResultDataset = Boolean(recordData.recordsByMeetType?.[meetType]);
 let selectedRegion = "all";
 let selectedSex = "men";
-let selectedWeightClass = "66";
+let selectedWeightClass = "all";
 let showMapNumbers = false;
 
 document.title = `${meetName}の都道府県選択｜日本のパワーリフティング団体地図`;
 title.textContent = `${meetName}：都道府県を選ぶ`;
-description.textContent = `${meetName}の最新情報を確認する都道府県協会を選択してください。`;
+description.textContent = "都道府県を選ぶと、数値の元になった公式結果を開けます。";
+meetViewLinks.forEach((link) => {
+  if (link.dataset.meetView === meetType) link.setAttribute("aria-current", "page");
+  else link.removeAttribute("aria-current");
+});
+if (meetType === "championship") {
+  recordToolbar.classList.add("is-championship");
+  recordSexControl.hidden = true;
+  recordClassControl.hidden = false;
+  recordUnit.textContent = "kg ／ 紺：県大会";
+} else {
+  recordUnit.textContent = "kg ／ 赤：新人大会";
+}
+
+function getClassLabel() {
+  return selectedWeightClass === "all" ? "全階級" : `${selectedWeightClass}kg級`;
+}
 
 function getRecord(prefectureName) {
   return recordsForMeet[prefectureName]?.[selectedSex]?.[selectedWeightClass] ?? null;
@@ -174,12 +196,13 @@ function formatRecord(record) {
 
 function getResultRow(scopeType, scopeName) {
   if (!hasResultDataset) return null;
-  return (recordData.resultRows || []).find((row) => (
+  const matchingRows = resultRowsForMeet.filter((row) => (
     row.scopeType === scopeType
     && row.scopeName === scopeName
     && row.sex === selectedSex
-    && row.weightClass === selectedWeightClass
-  )) || null;
+    && (selectedWeightClass === "all" || row.weightClass === selectedWeightClass)
+  ));
+  return matchingRows.reduce((best, row) => (!best || row.total > best.total ? row : best), null);
 }
 
 function populateWeightClasses() {
@@ -187,7 +210,7 @@ function populateWeightClasses() {
   weightClasses[selectedSex].forEach((weightClass) => {
     const option = document.createElement("option");
     option.value = weightClass;
-    option.textContent = `${weightClass}kg級`;
+    option.textContent = weightClass === "all" ? "全階級" : `${weightClass}kg級`;
     weightClassSelect.append(option);
   });
   weightClassSelect.value = selectedWeightClass;
@@ -217,13 +240,13 @@ function openGitHubSubmission(event) {
 
   const prefectureName = submissionPrefecture.value;
   const issueUrl = new URL(recordSubmissionForm.action);
-  const issueTitle = `【記録URL】${prefectureName}の新人大会結果`;
+  const issueTitle = `【記録URL】${prefectureName}の${meetName}結果`;
   const issueBody = [
-    "## 新人大会の記録候補",
+    `## ${meetName}の記録候補`,
     "",
     `- 都道府県：${prefectureName}`,
     `- 公式結果URL：${resultUrl.href}`,
-    `- 対象：${recordData.category}`,
+    `- 対象：${recordCategory}`,
     `- 送信ページ：${location.href}`,
     "",
     "公式協会・大会主催者が公開した結果か確認してください。"
@@ -240,7 +263,17 @@ function openGitHubSubmission(event) {
 
 function updateRecordControls() {
   const sexLabel = selectedSex === "men" ? "男子" : "女子";
-  currentRecordLabel.textContent = `${recordData.category} ${sexLabel}${selectedWeightClass}kg級`;
+  currentRecordLabel.textContent = `${recordCategory} ${sexLabel}・${getClassLabel()}`;
+  if (meetType === "championship") {
+    const recordedCount = prefectures.filter((prefecture) => getRecord(prefecture.name) !== null).length;
+    recordScopeNote.textContent = selectedWeightClass === "all"
+      ? "県大会版：47都道府県の男子・全階級最高Total（山形・鳥取は合同／地区大会）"
+      : `県大会版：男子・${getClassLabel()}の収録済み ${recordedCount}県 ／ 未収録 ${prefectures.length - recordedCount}県`;
+  } else if (selectedWeightClass === "all") {
+    recordScopeNote.textContent = `新人大会版：結果確認 ${countsForMeet.confirmed}県 ／ 未確認 ${countsForMeet.unconfirmed}県`;
+  } else {
+    recordScopeNote.textContent = `新人大会版：${selectedSex === "men" ? "男子" : "女子"}・${getClassLabel()}の確認済み記録`;
+  }
 }
 
 function updateMapNumberVisibility() {
@@ -262,17 +295,14 @@ function updateDatasetVisibility() {
 }
 
 function renderRecordCoverage() {
-  const researchedCount = researchForMeet?.prefectures.length || sourcesForMeet.length;
-  const verifiedCount = researchForMeet
-    ? researchForMeet.prefectures.filter((item) => item.status === "verified").length
-    : sourcesForMeet.length;
-  const audit = researchForMeet?.audit;
-  const auditText = audit?.officialResultFilesChecked
-    ? `　公式結果：${audit.officialResultFilesChecked}ファイル確認　`
-    : "　";
-  recordCoverage.replaceChildren(
-    document.createTextNode(`全国調査：${researchedCount} / ${prefectures.length}${auditText}数値確認：${verifiedCount}都道府県　`)
-  );
+  const audit = recordData.audit;
+  const label = meetType === "championship" ? "県大会" : "新人大会";
+  const auditText = meetType === "rookie" && audit?.officialResultFilesChecked
+    ? `　公式結果：${audit.officialResultFilesChecked}ファイル確認`
+    : "";
+  recordCoverage.replaceChildren(document.createTextNode(
+    `${label}：${countsForMeet.confirmed} / ${prefectures.length}　未確認：${countsForMeet.unconfirmed}${auditText}　`
+  ));
   if (audit?.sourceIndexUrl) {
     const indexLink = document.createElement("a");
     indexLink.href = audit.sourceIndexUrl;
@@ -281,7 +311,10 @@ function renderRecordCoverage() {
     indexLink.textContent = "JPA公式一覧";
     recordCoverage.append(indexLink, document.createTextNode("　"));
   }
-  sourcesForMeet.forEach((source, index) => {
+  if (meetType === "championship") {
+    recordCoverage.append(document.createTextNode("地図の県を押すと各公式結果を開きます。"));
+  }
+  sourcesForMeet.slice(0, meetType === "rookie" ? sourcesForMeet.length : 0).forEach((source, index) => {
     const link = document.createElement("a");
     link.href = source.sourceUrl;
     link.target = "_blank";
@@ -328,22 +361,26 @@ function createPrefectureLink(location, prefecture, isActive, recordLabels) {
   const resultRow = getResultRow("prefecture", prefecture.name);
   const recordText = formatRecord(displayedRecord);
   const sexLabel = selectedSex === "men" ? "男子" : "女子";
+  const referencePrefix = prefectureMeet?.sourceScope && prefectureMeet.sourceScope !== "県大会内最高Total" ? "代替：" : "";
   const eventLabel = prefectureMeet
-    ? `${prefectureMeet.eventName}（${prefectureMeet.heldAt.slice(0, 4)}）`
+    ? `${referencePrefix}${prefectureMeet.eventName}（${prefectureMeet.heldAt.slice(0, 4)}）`
     : "公式結果未確認";
   const athleteLabel = resultRow ? `／${resultRow.athlete}` : "";
-  const label = `${prefecture.name}｜${eventLabel} ${sexLabel}${selectedWeightClass}kg級 ${recordText}${athleteLabel}`;
+  const sourceScopeLabel = prefectureMeet?.sourceScope ? `／${prefectureMeet.sourceScope}` : "";
+  const label = `${prefecture.name}｜${eventLabel} ${sexLabel}・${getClassLabel()} ${recordText}${athleteLabel}${sourceScopeLabel}`;
   const targetUrl = prefectureMeet?.sourceUrl || prefecture.url;
   const targetLabel = prefectureMeet ? "公式結果PDF" : destination;
+  const informationType = prefectureMeet?.recordKind === "championship" ? "県大会記録" : meetName;
 
   link.classList.add("map-prefecture");
   link.classList.toggle("is-muted", !isActive);
   link.classList.toggle("is-fallback", Boolean(prefecture.fallback));
+  link.classList.toggle("is-reference-record", prefectureMeet?.recordKind === "championship");
   link.setAttribute("href", targetUrl);
   link.setAttribute("target", "_blank");
   link.setAttribute("rel", "noreferrer");
   link.dataset.prefecture = prefecture.name;
-  link.setAttribute("aria-label", `${prefecture.name}の${meetName}情報を${targetLabel}で確認`);
+  link.setAttribute("aria-label", `${prefecture.name}の${informationType}を${targetLabel}で確認`);
   if (!isActive) {
     link.setAttribute("tabindex", "-1");
     link.setAttribute("aria-hidden", "true");
@@ -367,9 +404,11 @@ function createRecordLabel({ path, prefecture, isActive }) {
   const text = document.createElementNS(svgNamespace, "text");
   const bounds = path.getBBox();
   const record = getRecord(prefecture.name);
+  const resultRow = getResultRow("prefecture", prefecture.name);
 
   text.classList.add("map-record-value");
   text.classList.toggle("has-value", record !== null);
+  text.classList.toggle("is-reference-record", resultRow?.recordKind === "championship");
   text.classList.toggle("is-muted", !isActive);
   text.dataset.prefecture = prefecture.name;
   text.setAttribute("x", bounds.x + bounds.width / 2);
@@ -388,7 +427,7 @@ function createDistrictCallout({ district }) {
   const resultRow = getResultRow("district", district.scopeName);
   const sexLabel = selectedSex === "men" ? "男子" : "女子";
   const athleteLabel = resultRow ? `／${resultRow.athlete}` : "";
-  const label = `${district.eventName}（${district.heldAt.slice(0, 4)}）｜${sexLabel}${selectedWeightClass}kg級 ${formatRecord(record)}${athleteLabel}`;
+  const label = `${district.eventName}（${district.heldAt.slice(0, 4)}）｜${sexLabel}・${getClassLabel()} ${formatRecord(record)}${athleteLabel}`;
 
   link.className = "district-callout";
   link.href = district.sourceUrl;
@@ -399,7 +438,7 @@ function createDistrictCallout({ district }) {
   scope.textContent = "地区新人";
   name.textContent = district.shortName;
   value.className = "district-callout-value";
-  value.textContent = `${sexLabel}${selectedWeightClass}kg級 ${record === null ? "–" : `${record}kg`}`;
+  value.textContent = `${sexLabel}・${getClassLabel()} ${record === null ? "–" : `${record}kg`}`;
   event.textContent = `${district.heldAt.slice(0, 4)} 公式結果`;
   link.append(scope, name, value, event);
   return link;
@@ -457,7 +496,7 @@ search.addEventListener("input", renderPrefectures);
 sexButtons.forEach((button) => {
   button.addEventListener("click", () => {
     selectedSex = button.dataset.sex;
-    selectedWeightClass = selectedSex === "men" ? "66" : "63";
+    selectedWeightClass = "all";
     sexButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
     populateWeightClasses();
     renderPrefectures();

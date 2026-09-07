@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="パワーリフティング大会の都道府県協会を選択するページです。">
   <title>都道府県を選ぶ｜日本のパワーリフティング団体地図</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20260907-classes">
 </head>
 <body class="prefecture-page">
   <header class="site-header">
@@ -28,6 +28,11 @@
         <p id="prefecture-description">最新の大会情報を確認する都道府県協会を選択してください。</p>
       </div>
 
+      <nav class="record-version-switch" aria-label="表示する大会版を切り替える">
+        <a href="prefectures.html?type=rookie" data-meet-view="rookie">新人大会版</a>
+        <a href="prefectures.html?type=championship" data-meet-view="championship">県大会版</a>
+      </nav>
+
       <div class="prefecture-toolbar">
         <div class="prefecture-search">
           <label for="prefecture-search">都道府県名</label>
@@ -49,7 +54,7 @@
         </div>
       </div>
 
-      <div class="record-toolbar" id="record-toolbar" aria-label="新人大会の最高Total表示条件">
+      <div class="record-toolbar" id="record-toolbar" aria-label="大会最高Totalの表示条件">
         <div class="record-control">
           <span class="record-control-label">性別</span>
           <div class="record-sex-picker" role="group" aria-label="性別を選ぶ">
@@ -63,7 +68,7 @@
         </label>
         <div class="record-current">
           <span>表示中</span>
-          <strong id="record-current-label">新人大会・クラシック 男子66kg級</strong>
+          <strong id="record-current-label">大会最高Total 男子・全階級</strong>
         </div>
       </div>
 
@@ -74,7 +79,7 @@
             <input type="checkbox" id="map-number-toggle">
             <span>数字を表示</span>
           </label>
-          <span class="record-unit" id="record-unit">kg ／ –：未確認</span>
+          <span class="record-unit" id="record-unit">kg</span>
           <span class="prefecture-count" id="prefecture-count" aria-live="polite"></span>
         </div>
       </div>
@@ -83,7 +88,7 @@
         <aside class="district-callouts" id="district-callouts" aria-label="新人大会の確認状況" hidden></aside>
         <div class="map-prefecture-name" id="map-prefecture-name" aria-live="polite"></div>
       </div>
-      <p class="record-scope-note" id="record-scope-note">一般・JPA公認のみ　／　県＝地図内　／　地区＝地図外</p>
+      <p class="record-scope-note" id="record-scope-note">新人3県 ／ その他44県は直近のJPA公認大会を参考表示</p>
       <p class="prefecture-empty" id="prefecture-empty" aria-live="polite" hidden>該当する都道府県がありません。</p>
       <p class="prefecture-note">※ 公式サイトがJPAに掲載されていない県は、JPAの加盟都道府県協会一覧へ移動します。</p>
       <p class="record-coverage" id="record-coverage"></p>
@@ -163,6 +168,7 @@
 
   <script src="japan-map-data.js" defer></script>
   <script src="newcomer-results.js" defer></script>
+  <script src="prefecture-fallback-results.js" defer></script>
   <script src="newcomer-research.js" defer></script>
   <script src="prefecture-records.js" defer></script>
   <script src="prefectures.js" defer></script>
