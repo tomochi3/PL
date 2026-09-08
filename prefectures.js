@@ -4,7 +4,7 @@ const meetTypes = {
   rookie: "新人大会",
   record: "公認記録会",
   championship: "県大会",
-  kokuspo: "国スポ都道府県予選",
+  kokuspo: "国スポ本戦ボーダー",
   block: "ブロック選手権",
   "kokuspo-block": "国スポブロック予選"
 };
@@ -126,6 +126,7 @@ const researchForMeet = recordData.researchByMeetType?.[meetType] || null;
 const resultRowsForMeet = recordData.resultRowsByMeetType?.[meetType] || [];
 const countsForMeet = recordData.countsByMeetType?.[meetType] || { confirmed: 0, unconfirmed: 47 };
 const meetName = meetTypes[meetType] || "都道府県大会";
+const isKokuspo = meetType === "kokuspo";
 const recordCategory = recordData.categories?.[meetType] || "大会最高Total";
 const title = document.getElementById("prefecture-title");
 const description = document.getElementById("prefecture-description");
@@ -145,8 +146,6 @@ const districtCallouts = document.getElementById("district-callouts");
 const japanMapFrame = document.getElementById("japan-map-frame");
 const mapNumberToggle = document.getElementById("map-number-toggle");
 const recordToolbar = document.getElementById("record-toolbar");
-const recordSexControl = document.querySelector(".record-control");
-const recordClassControl = document.querySelector(".record-class-control");
 const recordUnit = document.getElementById("record-unit");
 const recordScopeNote = document.getElementById("record-scope-note");
 const recordSubmissionForm = document.getElementById("record-submission-form");
@@ -154,8 +153,8 @@ const submissionPrefecture = document.getElementById("submission-prefecture");
 const submissionUrl = document.getElementById("submission-url");
 const hasResultDataset = Boolean(recordData.recordsByMeetType?.[meetType]);
 let selectedRegion = "all";
-let selectedSex = "men";
-let selectedWeightClass = "all";
+let selectedSex = params.get("sex") === "women" ? "women" : "men";
+let selectedWeightClass = weightClasses[selectedSex].includes(params.get("class")) ? params.get("class") : "all";
 let showMapNumbers = false;
 
 document.title = `${meetName}の都道府県選択｜日本のパワーリフティング団体地図`;
@@ -165,13 +164,28 @@ meetViewLinks.forEach((link) => {
   if (link.dataset.meetView === meetType) link.setAttribute("aria-current", "page");
   else link.removeAttribute("aria-current");
 });
-if (meetType === "championship") {
-  recordToolbar.classList.add("is-championship");
-  recordSexControl.hidden = true;
-  recordClassControl.hidden = false;
-  recordUnit.textContent = "kg ／ 紺：県大会";
-} else {
-  recordUnit.textContent = "kg ／ 赤：新人大会";
+const modeDescription = document.getElementById("record-mode-description");
+recordUnit.textContent = meetType === "championship" ? "kg ／ 紺：県大会" : isKokuspo ? "kg ／ 緑：国スポ" : "kg ／ 赤：東京・愛知　斜線：近畿地区";
+modeDescription.textContent = meetType === "rookie"
+  ? "新人大会は、JPAに登録し、公式戦への出場経験がない選手を対象とする大会です。東京・愛知は都県の大会、近畿は6府県にまたがる地区大会として表示します。参加条件の詳細は各大会要項をご確認ください。"
+  : meetType === "championship"
+    ? "直近に収録したJPA公認大会の最高Total。現在の県大会データは各県の男子最高記録1件のみで、女子と他の階級は未収録です。山形・鳥取は合同／地区大会、ほか一部は記録会を含みます。"
+    : isKokuspo
+    ? `${recordData.kokuspo.edition}年あおもり国スポの本戦ボーダーを知る目安として、最終選考通過者の予選Totalの最低値を表示します。男子2名・女子1名（開催県は男子4名・女子2名）を階級順位とIPFポイントで選考するため、このkg数だけで出場が決まるわけではありません。全階級は性別ごとの通過者全体の最低値です。`
+    : "";
+
+function syncModeLinks() {
+  meetViewLinks.forEach((link) => {
+    const url = new URL(link.href);
+    url.searchParams.set("sex", selectedSex);
+    url.searchParams.set("class", selectedWeightClass);
+    link.href = url.href;
+  });
+  sexButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.sex === selectedSex)));
+}
+
+function getPrefectureDistrict(prefectureName) {
+  return districtsForMeet.find((district) => district.prefectures.includes(prefectureName)) || null;
 }
 
 function getClassLabel() {
@@ -190,6 +204,11 @@ function getDistrictRecord(district) {
   return district.records[selectedSex]?.[selectedWeightClass] ?? null;
 }
 
+function getMissingRecordLabel(prefectureName) {
+  if (isKokuspo && recordData.kokuspo?.verifiedSelections[prefectureName]?.includes(selectedSex)) return "該当階級の通過者なし";
+  return meetType === "championship" ? "未収録" : "未確認";
+}
+
 function formatRecord(record) {
   return record === null ? "未確認" : `${record}kg`;
 }
@@ -202,7 +221,7 @@ function getResultRow(scopeType, scopeName) {
     && row.sex === selectedSex
     && (selectedWeightClass === "all" || row.weightClass === selectedWeightClass)
   ));
-  return matchingRows.reduce((best, row) => (!best || row.total > best.total ? row : best), null);
+  return matchingRows.reduce((best, row) => (!best || (isKokuspo ? row.total < best.total : row.total > best.total) ? row : best), null);
 }
 
 function populateWeightClasses() {
@@ -264,15 +283,15 @@ function openGitHubSubmission(event) {
 function updateRecordControls() {
   const sexLabel = selectedSex === "men" ? "男子" : "女子";
   currentRecordLabel.textContent = `${recordCategory} ${sexLabel}・${getClassLabel()}`;
+  syncModeLinks();
+  const recordedCount = prefectures.filter((prefecture) => getRecord(prefecture.name) !== null).length;
   if (meetType === "championship") {
-    const recordedCount = prefectures.filter((prefecture) => getRecord(prefecture.name) !== null).length;
-    recordScopeNote.textContent = selectedWeightClass === "all"
-      ? "県大会版：47都道府県の男子・全階級最高Total（山形・鳥取は合同／地区大会）"
-      : `県大会版：男子・${getClassLabel()}の収録済み ${recordedCount}県 ／ 未収録 ${prefectures.length - recordedCount}県`;
-  } else if (selectedWeightClass === "all") {
-    recordScopeNote.textContent = `新人大会版：結果確認 ${countsForMeet.confirmed}県 ／ 未確認 ${countsForMeet.unconfirmed}県`;
+    recordScopeNote.textContent = `県大会：${sexLabel}・${getClassLabel()}の収録済み ${recordedCount}県 ／ 未収録 ${prefectures.length - recordedCount}県`;
+  } else if (isKokuspo) {
+    const verifiedCount = prefectures.filter((prefecture) => recordData.kokuspo.verifiedSelections[prefecture.name]?.includes(selectedSex)).length;
+    recordScopeNote.textContent = `${recordData.kokuspo.edition}年 国スポ：${sexLabel}・${getClassLabel()}の記録あり ${recordedCount}県 ／ 該当階級の通過者なし ${verifiedCount - recordedCount}県 ／ 未確認 ${prefectures.length - verifiedCount}県。未確認は0kgではありません。`;
   } else {
-    recordScopeNote.textContent = `新人大会版：${selectedSex === "men" ? "男子" : "女子"}・${getClassLabel()}の確認済み記録`;
+    recordScopeNote.textContent = `新人大会：東京・愛知の2大会 ＋ 近畿地区の1大会 ／ ${sexLabel}・${getClassLabel()}。斜線の6府県は地区カードの共通記録を参照。`;
   }
 }
 
@@ -282,7 +301,6 @@ function updateMapNumberVisibility() {
   if (!recordLayer) return;
   recordLayer.classList.toggle("is-hidden", !showMapNumbers);
   recordLayer.setAttribute("aria-hidden", String(!showMapNumbers));
-  districtCallouts?.classList.toggle("numbers-hidden", !showMapNumbers);
 }
 
 function updateDatasetVisibility() {
@@ -296,13 +314,27 @@ function updateDatasetVisibility() {
 
 function renderRecordCoverage() {
   const audit = recordData.audit;
-  const label = meetType === "championship" ? "県大会" : "新人大会";
+  const label = meetType === "championship" ? "県大会" : isKokuspo ? `${recordData.kokuspo.edition}年 国スポ選考` : "新人大会";
   const auditText = meetType === "rookie" && audit?.officialResultFilesChecked
     ? `　公式結果：${audit.officialResultFilesChecked}ファイル確認`
     : "";
   recordCoverage.replaceChildren(document.createTextNode(
     `${label}：${countsForMeet.confirmed} / ${prefectures.length}　未確認：${countsForMeet.unconfirmed}${auditText}　`
   ));
+  if (isKokuspo) {
+    const partialSelections = Object.entries(recordData.kokuspo.verifiedSelections)
+      .filter(([, sexes]) => sexes.length === 1)
+      .map(([name, sexes]) => `${name}は${sexes[0] === "men" ? "男子" : "女子"}のみ`);
+    const partialNote = partialSelections.length ? `（${partialSelections.join("、")}）` : "";
+    recordCoverage.textContent = `${recordData.kokuspo.edition}年：${sourcesForMeet.length}都道府県・${resultRowsForMeet.length}名の通過記録を収録${partialNote}。その他は未確認。確認日：${recordData.kokuspo.asOf}。`;
+    const ruleLink = document.createElement("a");
+    ruleLink.href = recordData.kokuspo.rulesUrl;
+    ruleLink.target = "_blank";
+    ruleLink.rel = "noreferrer";
+    ruleLink.textContent = `${recordData.kokuspo.edition}年 JPA公式選考方法`;
+    recordCoverage.append(document.createTextNode(" "), ruleLink);
+    return;
+  }
   if (audit?.sourceIndexUrl) {
     const indexLink = document.createElement("a");
     indexLink.href = audit.sourceIndexUrl;
@@ -357,22 +389,26 @@ function createPrefectureLink(location, prefecture, isActive, recordLabels) {
   const pathTitle = document.createElementNS(svgNamespace, "title");
   const destination = prefecture.fallback ? "JPA加盟団体一覧" : "都道府県協会サイト";
   const prefectureMeet = getPrefectureMeet(prefecture.name);
+  const district = getPrefectureDistrict(prefecture.name);
   const displayedRecord = getRecord(prefecture.name);
   const resultRow = getResultRow("prefecture", prefecture.name);
-  const recordText = formatRecord(displayedRecord);
+  const recordText = displayedRecord === null ? getMissingRecordLabel(prefecture.name) : formatRecord(displayedRecord);
   const sexLabel = selectedSex === "men" ? "男子" : "女子";
-  const referencePrefix = prefectureMeet?.sourceScope && prefectureMeet.sourceScope !== "県大会内最高Total" ? "代替：" : "";
+  const referencePrefix = meetType === "championship" && prefectureMeet?.sourceScope && prefectureMeet.sourceScope !== "県大会内最高Total" ? "代替：" : "";
   const eventLabel = prefectureMeet
     ? `${referencePrefix}${prefectureMeet.eventName}（${prefectureMeet.heldAt.slice(0, 4)}）`
-    : "公式結果未確認";
-  const athleteLabel = resultRow ? `／${resultRow.athlete}` : "";
+    : district ? `${district.name}（地区大会・${district.heldAt.slice(0, 4)}）` : "公式結果未確認";
+  const athleteLabel = resultRow ? `／${resultRow.athlete}（${resultRow.weightClass}kg級）${isKokuspo ? `／IPF ${resultRow.ipfPoints}` : ""}` : "";
   const sourceScopeLabel = prefectureMeet?.sourceScope ? `／${prefectureMeet.sourceScope}` : "";
-  const label = `${prefecture.name}｜${eventLabel} ${sexLabel}・${getClassLabel()} ${recordText}${athleteLabel}${sourceScopeLabel}`;
-  const targetUrl = prefectureMeet?.sourceUrl || prefecture.url;
-  const targetLabel = prefectureMeet ? "公式結果PDF" : destination;
-  const informationType = prefectureMeet?.recordKind === "championship" ? "県大会記録" : meetName;
+  const label = district
+    ? `${prefecture.name}｜近畿地区大会（6府県共通・県単独の記録ではありません） ${sexLabel}・${getClassLabel()} ${formatRecord(getDistrictRecord(district))}`
+    : `${prefecture.name}｜${eventLabel} ${sexLabel}・${getClassLabel()} ${recordText}${athleteLabel}${sourceScopeLabel}`;
+  const targetUrl = prefectureMeet?.sourceUrl || district?.sourceUrl || prefecture.url;
+  const targetLabel = prefectureMeet || district ? "公式資料" : destination;
 
   link.classList.add("map-prefecture");
+  link.classList.toggle("is-district-record", Boolean(district));
+  link.classList.toggle("is-kokuspo-record", isKokuspo && displayedRecord !== null);
   link.classList.toggle("is-muted", !isActive);
   link.classList.toggle("is-fallback", Boolean(prefecture.fallback));
   link.classList.toggle("is-reference-record", prefectureMeet?.recordKind === "championship");
@@ -380,7 +416,7 @@ function createPrefectureLink(location, prefecture, isActive, recordLabels) {
   link.setAttribute("target", "_blank");
   link.setAttribute("rel", "noreferrer");
   link.dataset.prefecture = prefecture.name;
-  link.setAttribute("aria-label", `${prefecture.name}の${informationType}を${targetLabel}で確認`);
+  link.setAttribute("aria-label", `${label}。${targetLabel}で確認`);
   if (!isActive) {
     link.setAttribute("tabindex", "-1");
     link.setAttribute("aria-hidden", "true");
@@ -407,13 +443,14 @@ function createRecordLabel({ path, prefecture, isActive }) {
   const resultRow = getResultRow("prefecture", prefecture.name);
 
   text.classList.add("map-record-value");
+  text.classList.toggle("is-kokuspo-record", isKokuspo);
   text.classList.toggle("has-value", record !== null);
   text.classList.toggle("is-reference-record", resultRow?.recordKind === "championship");
   text.classList.toggle("is-muted", !isActive);
   text.dataset.prefecture = prefecture.name;
   text.setAttribute("x", bounds.x + bounds.width / 2);
   text.setAttribute("y", bounds.y + bounds.height / 2);
-  text.textContent = record === null ? "–" : record;
+  text.textContent = getPrefectureDistrict(prefecture.name) ? "地区" : record === null ? "–" : record;
   return text;
 }
 
@@ -426,7 +463,7 @@ function createDistrictCallout({ district }) {
   const record = getDistrictRecord(district);
   const resultRow = getResultRow("district", district.scopeName);
   const sexLabel = selectedSex === "men" ? "男子" : "女子";
-  const athleteLabel = resultRow ? `／${resultRow.athlete}` : "";
+  const athleteLabel = resultRow ? `／${resultRow.athlete}（${resultRow.weightClass}kg級）${isKokuspo ? `／IPF ${resultRow.ipfPoints}` : ""}` : "";
   const label = `${district.eventName}（${district.heldAt.slice(0, 4)}）｜${sexLabel}・${getClassLabel()} ${formatRecord(record)}${athleteLabel}`;
 
   link.className = "district-callout";
@@ -435,12 +472,16 @@ function createDistrictCallout({ district }) {
   link.rel = "noreferrer";
   link.setAttribute("aria-label", `${label}の公式結果を確認`);
   scope.className = "district-callout-scope";
-  scope.textContent = "地区新人";
-  name.textContent = district.shortName;
+  scope.textContent = "地区大会 ／ 6府県共通";
+  name.textContent = `${district.shortName}新人大会`;
   value.className = "district-callout-value";
   value.textContent = `${sexLabel}・${getClassLabel()} ${record === null ? "–" : `${record}kg`}`;
-  event.textContent = `${district.heldAt.slice(0, 4)} 公式結果`;
-  link.append(scope, name, value, event);
+  event.textContent = `${district.heldAt.slice(0, 4)} 公式結果を開く`;
+  const area = document.createElement("small");
+  area.textContent = district.prefectures.join("・");
+  const note = document.createElement("small");
+  note.textContent = "地区全体の最高Total。各府県の最高記録ではありません。";
+  link.append(scope, name, value, area, note, event);
   return link;
 }
 
@@ -459,6 +500,23 @@ function renderPrefectures() {
     district.prefectures.some((prefectureName) => activeNames.has(prefectureName))
   ));
 
+  const defs = document.createElementNS(svgNamespace, "defs");
+  const pattern = document.createElementNS(svgNamespace, "pattern");
+  pattern.id = "district-hatch";
+  pattern.setAttribute("width", "6");
+  pattern.setAttribute("height", "6");
+  pattern.setAttribute("patternUnits", "userSpaceOnUse");
+  const base = document.createElementNS(svgNamespace, "rect");
+  base.setAttribute("width", "6");
+  base.setAttribute("height", "6");
+  base.setAttribute("fill", "#f1eafa");
+  const stripe = document.createElementNS(svgNamespace, "path");
+  stripe.setAttribute("d", "M-1,1 l2,-2 M0,6 l6,-6 M5,7 l2,-2");
+  stripe.setAttribute("stroke", "#9a7bb7");
+  stripe.setAttribute("stroke-width", "1");
+  pattern.append(base, stripe);
+  defs.append(pattern);
+  svg.append(defs);
   svg.classList.add("japan-map-svg");
   svg.setAttribute("viewBox", window.japanMapData.viewBox);
   svg.setAttribute("aria-label", "都道府県境界を表示した日本地図");
@@ -479,7 +537,44 @@ function renderPrefectures() {
   emptyMessage.hidden = filtered.length > 0;
   count.textContent = `${filtered.length}件`;
   updateRecordControls();
+  renderRecordTable(filtered);
   mapPrefectureName.textContent = filtered.length === 1 ? filtered[0].name : "";
+}
+
+function renderRecordTable(filtered) {
+  const list = document.getElementById("record-detail-list");
+  list.hidden = !isKokuspo;
+  if (!isKokuspo) return;
+  document.getElementById("record-table-caption").textContent = `${recordData.kokuspo.edition}年 ${selectedSex === "men" ? "男子" : "女子"}・${getClassLabel()}：選考通過者の最低Total（予選実績）`;
+  const body = document.getElementById("record-table-body");
+  body.replaceChildren(...filtered.map((prefecture) => {
+    const row = getResultRow("prefecture", prefecture.name);
+    const tr = document.createElement("tr");
+    const name = document.createElement("th");
+    name.scope = "row";
+    name.textContent = prefecture.name;
+    const total = document.createElement("td");
+    total.textContent = row ? formatRecord(row.total) : getMissingRecordLabel(prefecture.name);
+    const athlete = document.createElement("td");
+    athlete.textContent = row ? `${row.athlete}（${row.weightClass}kg級）／IPF ${row.ipfPoints}` : "—";
+    const source = document.createElement("td");
+    const meet = getPrefectureMeet(prefecture.name);
+    if (meet) {
+      const result = document.createElement("a");
+      result.href = meet.sourceUrl;
+      result.target = "_blank";
+      result.rel = "noreferrer";
+      result.textContent = "予選結果";
+      const selection = document.createElement("a");
+      selection.href = meet.selectionSourceUrl;
+      selection.target = "_blank";
+      selection.rel = "noreferrer";
+      selection.textContent = "通過者発表";
+      source.append(result, document.createTextNode(" ／ "), selection);
+    } else source.textContent = "未確認";
+    tr.append(name, total, athlete, source);
+    return tr;
+  }));
 }
 
 regionButtons.forEach((button) => {

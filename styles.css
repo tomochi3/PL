@@ -848,8 +848,8 @@ h2 {
 
 .record-version-switch {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  width: min(100%, 420px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(100%, 600px);
   margin: 0 0 18px;
   padding: 4px;
   border: 1px solid var(--line);
@@ -968,10 +968,6 @@ h2 {
   background: var(--surface);
 }
 
-.record-toolbar.is-championship {
-  grid-template-columns: minmax(140px, 190px) 1fr;
-}
-
 .record-control-label,
 .record-class-control span,
 .record-current span {
@@ -1021,7 +1017,7 @@ h2 {
   display: block;
   color: var(--ink);
   font-size: 14px;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .map-result-meta {
@@ -1229,7 +1225,6 @@ h2 {
   font-weight: 800;
 }
 
-.district-callouts.numbers-hidden .district-callout-value { display: none; }
 
 .map-prefecture-name {
   position: absolute;
@@ -1384,7 +1379,6 @@ h2 {
   .prefecture-toolbar { grid-template-columns: minmax(0, 1fr); padding: 10px; }
   .prefecture-toolbar > * { min-width: 0; }
   .record-toolbar { grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
-  .record-toolbar.is-championship { grid-template-columns: 1fr; }
   .record-current { grid-column: 1 / -1; }
   .prefecture-results-heading { display: block; }
   .map-result-meta { justify-content: flex-end; gap: 10px; margin-top: 7px; }
@@ -1406,3 +1400,27 @@ h2 {
   .record-submission-form { grid-template-columns: minmax(0, 1fr); padding: 12px; }
   .record-submission-button { width: 100%; }
 }
+
+/* Distinguish regional coverage from prefectural results without relying on color. */
+.record-mode-description { max-width: 900px; margin: -4px 0 20px; color: var(--muted); font-size: 13px; line-height: 1.8; }
+.map-prefecture.is-district-record:not(.is-muted) path { fill: url(#district-hatch); stroke: #765091; stroke-width: 1.5; }
+.map-prefecture.is-district-record:hover path, .map-prefecture.is-district-record:focus path { stroke: #482564; stroke-width: 3; }
+.district-callout { border-left-color: #765091; }
+.district-callout-scope { color: #765091; }
+.district-callout:hover, .district-callout:focus-visible { border-color: #765091; color: #482564; }
+.map-record-value.has-value.is-kokuspo-record { fill: #11665e; }
+.map-prefecture.is-kokuspo-record:not(.is-muted) path { fill: #dceee9; stroke: #11665e; }
+.map-prefecture.is-kokuspo-record:hover path, .map-prefecture.is-kokuspo-record:focus path { fill: #a1d2c5; stroke-width: 2; }
+@media (max-width: 640px) {
+  .record-version-switch a { padding: 10px 5px; font-size: 11px; }
+  .record-current strong { white-space: normal; }
+}
+
+.record-detail-list { margin: 16px 0; font-size: 13px; }
+.record-detail-list summary { cursor: pointer; padding: 12px; border: 1px solid var(--line); border-radius: 6px; font-weight: 800; }
+.record-table-scroll { overflow-x: auto; }
+.record-detail-list table { width: 100%; border-collapse: collapse; min-width: 620px; background: var(--surface); }
+.record-detail-list caption { text-align: left; padding: 12px 0; color: var(--muted); }
+.record-detail-list th, .record-detail-list td { text-align: left; padding: 10px; border-bottom: 1px solid var(--line); }
+.record-detail-list thead { background: var(--surface-subtle); }
+.record-detail-list a { color: var(--teal); text-decoration: underline; }

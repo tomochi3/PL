@@ -1,6 +1,11 @@
 (() => {
   const research = window.newcomerResearch || null;
-  const newcomerRows = (window.newcomerResultRows || []).map((row) => ({
+  // This view covers the three newcomer-only meets, not newcomer awards/divisions
+  // embedded in an ordinary prefectural championship.
+  const newcomerRows = (window.newcomerResultRows || []).filter((row) =>
+    row.scopeType === "district" ? row.scopeName === "近畿"
+      : ["東京都", "愛知県"].includes(row.scopeName)
+  ).map((row) => ({
     ...row,
     recordKind: "newcomer"
   }));
@@ -14,19 +19,20 @@
     return entries?.find((item) => item.name === scopeName)?.resultUrl || fallbackUrl;
   }
 
-  function addRecord(target, scopeName, row) {
+  function addRecord(target, scopeName, row, aggregate) {
     target[scopeName] ||= { men: {}, women: {} };
     const current = target[scopeName][row.sex][row.weightClass];
     target[scopeName][row.sex][row.weightClass] = current == null
       ? row.total
-      : Math.max(current, row.total);
+      : aggregate(current, row.total);
     const allClasses = target[scopeName][row.sex].all;
     target[scopeName][row.sex].all = allClasses == null
       ? row.total
-      : Math.max(allClasses, row.total);
+      : aggregate(allClasses, row.total);
   }
 
-  function buildDataset(rows, useResearchUrls = false) {
+  function buildDataset(rows, useResearchUrls = false, aggregate = Math.max) {
+    rows = rows.filter((row) => Number.isFinite(row.total) && row.total > 0);
     const latestMeetByScope = new Map();
     rows.forEach((row) => {
       const scopeKey = `${row.scopeType}:${row.scopeName}`;
@@ -42,7 +48,7 @@
     const districtRecords = {};
     currentRows.forEach((row) => {
       const target = row.scopeType === "prefecture" ? prefectureRecords : districtRecords;
-      addRecord(target, row.scopeName, row);
+      addRecord(target, row.scopeName, row, aggregate);
     });
 
     const meets = [...new Map(
@@ -58,6 +64,7 @@
         newcomerCategory: row.newcomerCategory,
         recordKind: row.recordKind,
         sourceScope: row.sourceScope,
+        selectionSourceUrl: row.selectionSourceUrl,
         organizerUrl: row.organizerUrl,
         sourceUrl: useResearchUrls
           ? getVerifiedNewcomerUrl(row.scopeType, row.scopeName, row.sourceUrl)
@@ -90,22 +97,29 @@
 
   const rookie = buildDataset(newcomerRows, true);
   const championship = buildDataset(championshipRows);
+  const kokuspo = buildDataset((window.kokuspoResultRows || [])
+    .filter((row) => row.edition === window.kokuspoMetadata?.edition && row.qualificationStatus === "qualified")
+    .map((row) => ({ ...row, recordKind: "kokuspo" })), false, Math.min);
   const rookiePrefectureCount = rookie.sources.length;
   const championshipPrefectureCount = championship.sources.length;
 
   window.prefectureRecordData = {
     categories: {
       rookie: "新人大会最高Total",
-      championship: "県大会最高Total"
+      championship: "県大会最高Total",
+      kokuspo: "国スポ選考通過者の最低Total"
     },
+    kokuspo: window.kokuspoMetadata || null,
     asOf: research?.asOf || "2026-09-07",
     recordsByMeetType: {
       rookie: rookie.prefectureRecords,
-      championship: championship.prefectureRecords
+      championship: championship.prefectureRecords,
+      kokuspo: kokuspo.prefectureRecords
     },
     prefectureMeetsByMeetType: {
       rookie: rookie.prefectureMeets,
-      championship: championship.prefectureMeets
+      championship: championship.prefectureMeets,
+      kokuspo: kokuspo.prefectureMeets
     },
     districts: {
       rookie: rookie.districtMeets,
@@ -113,7 +127,8 @@
     },
     sourcesByMeetType: {
       rookie: rookie.sources,
-      championship: championship.sources
+      championship: championship.sources,
+      kokuspo: kokuspo.sources
     },
     districtResearch: {
       rookie: {
@@ -133,19 +148,21 @@
     },
     resultRowsByMeetType: {
       rookie: rookie.currentRows,
-      championship: championship.currentRows
+      championship: championship.currentRows,
+      kokuspo: kokuspo.currentRows
     },
     countsByMeetType: {
       rookie: {
         confirmed: rookiePrefectureCount,
         unconfirmed: 47 - rookiePrefectureCount
       },
+      kokuspo: { confirmed: kokuspo.sources.length, unconfirmed: 47 - kokuspo.sources.length },
       championship: {
         confirmed: championshipPrefectureCount,
         unconfirmed: 47 - championshipPrefectureCount
       }
     },
     audit: research?.audit || null,
-    resultRows: [...rookie.currentRows, ...championship.currentRows]
+    resultRows: [...rookie.currentRows, ...championship.currentRows, ...kokuspo.currentRows]
   };
 })();
